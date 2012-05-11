@@ -3,6 +3,7 @@
 .bundle
 .config
 .DS_STORE
+debug.log
 coverage
 InstalledFiles
 lib/bundler/man
