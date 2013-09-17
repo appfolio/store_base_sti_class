@@ -36,6 +36,9 @@ RAILS_VERSIONS = [
         "3.2.9",
         "3.2.10",
         "3.2.11",
+        "3.2.12",
+        "3.2.13",
+        "3.2.14",
 ]
 
 RAILS_VERSIONS.each do |version|
