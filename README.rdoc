@@ -26,7 +26,7 @@ will output,
   #<Vendor id: 1, type: "Vendor" ...>
   #<Address id: 1, addressable_id: 1, addressable_type: 'Person' ...>
 
-Notice that addressable_type column is Person even though the actual class is Vendor. 
+Notice that addressable_type column is Person even though the actual class is Vendor.
 
 Normally, this isn't a problem, however it can have negative performance characteristic in certain circumstances. The most obvious one is that
 a join with persons or an extra query is required to find out the actual type of addressable.
@@ -52,9 +52,9 @@ When changing this behavior you will have write a migration to update all of you
 
 == Notes
 
-This gem incorporates the work from https://github.com/pkmiec/store_base_sti_class_for_3_0, https://github.com/appfolio/store_base_sti_class_for_3_1, and incorporating changes  from https://github.com/Lovethis/store_base_sti_class_for_3_1 
+This gem incorporates the work from https://github.com/pkmiec/store_base_sti_class_for_3_0, https://github.com/appfolio/store_base_sti_class_for_3_1, and incorporating changes  from https://github.com/Lovethis/store_base_sti_class_for_3_1
 
-It currently works with ActiveRecord 3.0.5 through 3.2.3.
+It currently works with ActiveRecord 3.0.5 through 4.0.1.
 
 == Copyright
 

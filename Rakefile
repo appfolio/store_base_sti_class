@@ -19,7 +19,7 @@ Jeweler::Tasks.new do |gem|
   gem.homepage = "http://github.com/appfolio/store_base_sti_class"
   gem.license = "MIT"
   gem.summary = %Q{
-    Modifies ActiveRecord 3.0.5+ with the ability to store the actual class (instead of the base class) in polymorhic _type columns when using STI
+    Modifies ActiveRecord 3.0.5 - 4.0.1 with the ability to store the actual class (instead of the base class) in polymorhic _type columns when using STI
   }
   gem.description = %Q{
     ActiveRecord has always stored the base class in polymorphic _type columns when using STI. This can have non-trivial
@@ -28,7 +28,7 @@ Jeweler::Tasks.new do |gem|
   }
   gem.email = "andrew.mutz@appfolio.com"
   gem.authors = ["Andrew Mutz"]
-  
+
   # Include your dependencies below. Runtime dependencies are required when using your gem,
   # and development dependencies are only needed for development (ie running rake tasks, tests, etc)
   #  gem.add_runtime_dependency 'jabber4r', '> 0.1'

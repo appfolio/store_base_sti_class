@@ -17,7 +17,6 @@ Gem::Specification.new do |s|
     "README.rdoc"
   ]
   s.files = [
-    "Appraisals",
     "CHANGELOG",
     "Gemfile",
     "Gemfile.lock",
@@ -25,60 +24,17 @@ Gem::Specification.new do |s|
     "README.rdoc",
     "Rakefile",
     "VERSION",
-    "db/storebasestiname_unittest.sql",
-    "gemfiles/rails_3.0.10.gemfile",
-    "gemfiles/rails_3.0.10.gemfile.lock",
-    "gemfiles/rails_3.0.11.gemfile",
-    "gemfiles/rails_3.0.11.gemfile.lock",
-    "gemfiles/rails_3.0.12.gemfile",
-    "gemfiles/rails_3.0.12.gemfile.lock",
-    "gemfiles/rails_3.0.3.gemfile",
-    "gemfiles/rails_3.0.3.gemfile.lock",
-    "gemfiles/rails_3.0.4.gemfile",
-    "gemfiles/rails_3.0.4.gemfile.lock",
-    "gemfiles/rails_3.0.5.gemfile",
-    "gemfiles/rails_3.0.5.gemfile.lock",
-    "gemfiles/rails_3.0.6.gemfile",
-    "gemfiles/rails_3.0.6.gemfile.lock",
-    "gemfiles/rails_3.0.7.gemfile",
-    "gemfiles/rails_3.0.7.gemfile.lock",
-    "gemfiles/rails_3.0.8.gemfile",
-    "gemfiles/rails_3.0.8.gemfile.lock",
-    "gemfiles/rails_3.0.9.gemfile",
-    "gemfiles/rails_3.0.9.gemfile.lock",
-    "gemfiles/rails_3.1.0.gemfile",
-    "gemfiles/rails_3.1.0.gemfile.lock",
-    "gemfiles/rails_3.1.1.gemfile",
-    "gemfiles/rails_3.1.1.gemfile.lock",
-    "gemfiles/rails_3.1.2.gemfile",
-    "gemfiles/rails_3.1.2.gemfile.lock",
-    "gemfiles/rails_3.1.3.gemfile",
-    "gemfiles/rails_3.1.3.gemfile.lock",
-    "gemfiles/rails_3.1.4.gemfile",
-    "gemfiles/rails_3.1.4.gemfile.lock",
-    "gemfiles/rails_3.2.0.gemfile",
-    "gemfiles/rails_3.2.0.gemfile.lock",
-    "gemfiles/rails_3.2.1.gemfile",
-    "gemfiles/rails_3.2.1.gemfile.lock",
-    "gemfiles/rails_3.2.2.gemfile",
-    "gemfiles/rails_3.2.2.gemfile.lock",
-    "gemfiles/rails_3.2.3.gemfile",
-    "gemfiles/rails_3.2.3.gemfile.lock",
     "lib/store_base_sti_class.rb",
     "lib/store_base_sti_class_for_3_0.rb",
     "lib/store_base_sti_class_for_3_1_and_above.rb",
-    "store_base_sti_class.gemspec",
-    "test/connection.rb",
-    "test/helper.rb",
-    "test/models.rb",
-    "test/schema.rb",
-    "test/test_store_base_sti_class.rb"
+    "lib/store_base_sti_class_for_4_0.rb",
+    "store_base_sti_class.gemspec"
   ]
   s.homepage = "http://github.com/appfolio/store_base_sti_class"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
   s.rubygems_version = "1.8.21"
-  s.summary = "Modifies ActiveRecord 3.0.5+ with the ability to store the actual class (instead of the base class) in polymorhic _type columns when using STI"
+  s.summary = "Modifies ActiveRecord 3.0.5 - 4.0.1 with the ability to store the actual class (instead of the base class) in polymorhic _type columns when using STI"
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
