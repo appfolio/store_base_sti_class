@@ -52,7 +52,11 @@ When changing this behavior you will have write a migration to update all of you
 
 == Notes
 
-This gem incorporates the work from https://github.com/pkmiec/store_base_sti_class_for_3_0, https://github.com/appfolio/store_base_sti_class_for_3_1, and incorporating changes  from https://github.com/Lovethis/store_base_sti_class_for_3_1
+This gem incorporates work from:
+- https://github.com/pkmiec/store_base_sti_class_for_3_0
+- https://github.com/appfolio/store_base_sti_class_for_3_1
+- https://github.com/Lovethis/store_base_sti_class_for_3_1
+- https://github.com/codepodu/store_base_sti_class_for_4_0
 
 It currently works with ActiveRecord 3.0.5 through 4.0.1.
 
