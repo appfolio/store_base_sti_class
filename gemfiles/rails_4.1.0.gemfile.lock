@@ -74,9 +74,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activerecord
+  activerecord (= 4.0.1)
   appraisal
   bundler
   jeweler
-  minitest (~> 4.0)
   sqlite3
