@@ -1,6 +1,7 @@
 require 'active_record/associations/join_dependency/join_part'
 
-if ActiveRecord::VERSION::STRING =~ /^4\.1/
+#if ActiveRecord::VERSION::STRING =~ /^4\.1/
+if ActiveRecord::VERSION::STRING.include?("4.1")
   module ActiveRecord
 
     class Base
