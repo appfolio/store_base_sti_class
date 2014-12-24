@@ -152,7 +152,7 @@ if ActiveRecord::VERSION::STRING =~ /^4\.0/
               scope.where_values      = Array(values[:where])      + Array(preload_values[:where])
               scope.references_values = Array(values[:references]) + Array(preload_values[:references])
 
-              scope.select!   preload_values[:select] || values[:select] || table[Arel.star]
+              scope.select   preload_values[:select] || values[:select] || table[Arel.star]
               scope.includes! preload_values[:includes] || values[:includes]
 
               if options[:as]
