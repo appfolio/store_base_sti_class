@@ -2,7 +2,7 @@
 
 source "https://rubygems.org"
 
-gem "activerecord", "3.2.4"
+gem "activerecord", "4.0.12"
 gem "sqlite3", :group => :development
 gem "appraisal", :group => :development
 gem "jeweler", :group => :development
