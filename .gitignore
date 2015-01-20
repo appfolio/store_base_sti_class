@@ -3,19 +3,21 @@
 .bundle
 .config
 .DS_STORE
+.idea
+db
 debug.log
 coverage
+Gemfile.lock
+gemfiles/*.lock
 InstalledFiles
 lib/bundler/man
 pkg
 rdoc
 spec/reports
+storebasestiname_unittest.sql
 test/tmp
 test/version_tmp
 tmp
-gemfiles/*.lock
-Gemfile.lock
-.idea
 
 # YARD artifacts
 .yardoc
