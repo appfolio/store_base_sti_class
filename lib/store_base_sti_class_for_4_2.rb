@@ -1,4 +1,4 @@
-if ActiveRecord::VERSION::STRING =~ /^4\.1/
+if ActiveRecord::VERSION::STRING =~ /^4\.2/
   module ActiveRecord
 
     class Base
@@ -12,16 +12,12 @@ if ActiveRecord::VERSION::STRING =~ /^4\.1/
         def creation_attributes
           attributes = {}
 
-          if (reflection.macro == :has_one || reflection.macro == :has_many) && !options[:through]
+          if (reflection.has_one? || reflection.collection?) && !options[:through]
             attributes[reflection.foreign_key] = owner[reflection.active_record_primary_key]
 
             if reflection.options[:as]
               # START PATCH
-              # original:
-              # attributes[reflection.type] = owner.class.base_class.name
-
               attributes[reflection.type] = ActiveRecord::Base.store_base_sti_class ? owner.class.base_class.name : owner.class.name
-
               # END PATCH
             end
           end
@@ -34,6 +30,7 @@ if ActiveRecord::VERSION::STRING =~ /^4\.1/
         class JoinAssociation
           def join_constraints(foreign_table, foreign_klass, node, join_type, tables, scope_chain, chain)
             joins         = []
+            bind_values   = []
             tables        = tables.reverse
 
             scope_chain_index = 0
@@ -45,14 +42,9 @@ if ActiveRecord::VERSION::STRING =~ /^4\.1/
               table = tables.shift
               klass = reflection.klass
 
-              case reflection.source_macro
-              when :belongs_to
-                key         = reflection.association_primary_key
-                foreign_key = reflection.foreign_key
-              else
-                key         = reflection.foreign_key
-                foreign_key = reflection.active_record_primary_key
-              end
+              join_keys   = reflection.join_keys(klass)
+              key         = join_keys.key
+              foreign_key = join_keys.foreign_key
 
               constraint = build_constraint(klass, table, key, foreign_table, foreign_key)
 
@@ -71,19 +63,21 @@ if ActiveRecord::VERSION::STRING =~ /^4\.1/
                 left.merge right
               end
 
-              if reflection.type
-                # START PATCH
-                # original:
-                # constraint = constraint.and table[reflection.type].eq foreign_klass.base_class.name
-
-                sti_class_name = ActiveRecord::Base.store_base_sti_class ? foreign_klass.base_class.name : foreign_klass.name
-                constraint     = constraint.and table[reflection.type].eq sti_class_name
-
-                # END PATCH
+              if rel && !rel.arel.constraints.empty?
+                bind_values.concat rel.bind_values
+                constraint = constraint.and rel.arel.constraints
               end
 
-              if rel && !rel.arel.constraints.empty?
-                constraint = constraint.and rel.arel.constraints
+              if reflection.type
+                # START PATCH
+                # original: value  = foreign_klass.base_class.name
+                value  = ActiveRecord::Base.store_base_sti_class ? foreign_klass.class.base_class.name : foreign_klass.name
+                # END PATCH
+                column = klass.columns_hash[reflection.type.to_s]
+
+                substitute = klass.connection.substitute_at(column)
+                bind_values.push [column, value]
+                constraint = constraint.and table[reflection.type].eq ActiveRecord::Base.store_base_sti_class ? substitute : value
               end
 
               joins << table.create_join(table, table.create_on(constraint), join_type)
@@ -92,7 +86,7 @@ if ActiveRecord::VERSION::STRING =~ /^4\.1/
               foreign_table, foreign_klass = table, klass
             end
 
-            joins
+            JoinInformation.new joins, bind_values
           end
         end
       end
@@ -115,6 +109,7 @@ if ActiveRecord::VERSION::STRING =~ /^4\.1/
 
       class Preloader
         class Association
+
           def build_scope
             scope = klass.unscoped
 
@@ -186,92 +181,83 @@ if ActiveRecord::VERSION::STRING =~ /^4\.1/
       end
 
       class AssociationScope
-        def add_constraints(scope, owner, assoc_klass, refl, tracker)
-          chain = refl.chain
-          scope_chain = refl.scope_chain
+        def self.get_bind_values(owner, chain)
+          binds = []
+          last_reflection = chain.last
 
-          tables = construct_tables(chain, assoc_klass, refl, tracker)
-
-          chain.each_with_index do |reflection, i|
-            table, foreign_table = tables.shift, tables.first
-
-            if reflection.source_macro == :belongs_to
-              if reflection.options[:polymorphic]
-                key = reflection.association_primary_key(assoc_klass)
-              else
-                key = reflection.association_primary_key
-              end
-
-              foreign_key = reflection.foreign_key
-            else
-              key         = reflection.foreign_key
-              foreign_key = reflection.active_record_primary_key
-            end
-
-            if reflection == chain.last
-              bind_val = bind scope, table.table_name, key.to_s, owner[foreign_key], tracker
-              scope    = scope.where(table[key].eq(bind_val))
-
-              if reflection.type
-                # START PATCH
-                # original: value = owner.class.base_class.name
-
-                if ActiveRecord::Base.store_base_sti_class
-                  value = owner.class.base_class.name
-                else
-                  value = owner.class.name
-                end
-
-                # END PATCH
-
-                bind_val = bind scope, table.table_name, reflection.type.to_s, value, tracker
-                scope    = scope.where(table[reflection.type].eq(bind_val))
-              end
-            else
-              constraint = table[key].eq(foreign_table[foreign_key])
-
-              if reflection.type
-                # START PATCH
-                # original: type = chain[i + 1].klass.base_class.name
-                #           scope = scope.where(table[reflection.type].eq(bind_val))
-
-                if ActiveRecord::Base.store_base_sti_class
-                  type = chain[i + 1].klass.base_class.name
-                  scope = scope.where(table[reflection.type].eq(type))
-                else
-                  klass = chain[i + 1].klass
-                  scope = scope.where(table[reflection.type].in(([klass] + klass.descendants).map(&:name)))
-                end
-
-                # END PATCH
-              end
-
-              scope = scope.joins(join(foreign_table, constraint))
-            end
-
-            is_first_chain = i == 0
-            klass = is_first_chain ? assoc_klass : reflection.klass
-
-            # Exclude the scope of the association itself, because that
-            # was already merged in the #scope method.
-            scope_chain[i].each do |scope_chain_item|
-              item  = eval_scope(klass, scope_chain_item, owner)
-
-              if scope_chain_item == refl.scope
-                scope.merge! item.except(:where, :includes, :bind)
-              end
-
-              if is_first_chain
-                scope.includes! item.includes_values
-              end
-
-              scope.where_values += item.where_values
-              scope.order_values |= item.order_values
-            end
+          binds << last_reflection.join_id_for(owner)
+          if last_reflection.type
+            # START PATCH
+            # original: binds << owner.class.base_class.name
+            binds << (ActiveRecord::Base.store_base_sti_class ? owner.class.base_class.name : owner.class.name)
+            # END PATCH
           end
 
-          scope
+          chain.each_cons(2).each do |reflection, next_reflection|
+            if reflection.type
+              # START PATCH
+              # original: binds << next_reflection.klass.base_class.name
+              binds << (ActiveRecord::Base.store_base_sti_class ? next_reflection.klass.base_class.name : next_reflection.klass.name)
+              # END PATCH
+            end
+          end
+          binds
         end
+        class BindSubstitution
+          def bind_value(scope, column, value, alias_tracker)
+            substitute = alias_tracker.connection.substitute_at(column)
+            scope.bind_values += [[column, @block.call(value)]]
+            substitute
+          end
+        end
+        def next_chain_scope(scope, table, reflection, tracker, assoc_klass, foreign_table, next_reflection)
+          join_keys = reflection.join_keys(assoc_klass)
+          key = join_keys.key
+          foreign_key = join_keys.foreign_key
+
+          constraint = table[key].eq(foreign_table[foreign_key])
+
+          if reflection.type
+            # BEGIN PATCH
+            # original: 
+            # value    = next_reflection.klass.base_class.name
+            # bind_val = bind scope, table.table_name, reflection.type, value, tracker
+            # scope    = scope.where(table[reflection.type].eq(bind_val))
+            if ActiveRecord::Base.store_base_sti_class
+              value    = next_reflection.klass.base_class.name
+              bind_val = bind scope, table.table_name, reflection.type, value, tracker
+              scope    = scope.where(table[reflection.type].eq(bind_val))
+            else
+              value    = next_reflection.klass.name
+              klass    = next_reflection.klass
+              scope    = scope.where(table[reflection.type].in(([klass] + klass.descendants).map(&:name)))
+            end
+            # END PATCH
+            
+          end
+
+          scope = scope.joins(join(foreign_table, constraint))
+        end
+        def last_chain_scope(scope, table, reflection, owner, tracker, assoc_klass)
+          join_keys = reflection.join_keys(assoc_klass)
+          key = join_keys.key
+          foreign_key = join_keys.foreign_key
+
+          bind_val = bind scope, table.table_name, key.to_s, owner[foreign_key], tracker
+          scope    = scope.where(table[key].eq(bind_val))
+
+          if reflection.type
+            # BEGIN PATCH
+            # original: owner.class.base_class.name
+            value    = ActiveRecord::Base.store_base_sti_class ? owner.class.base_class.name : owner.class.name
+            # END PATCH
+            bind_val = bind scope, table.table_name, reflection.type, value, tracker
+            scope    = scope.where(table[reflection.type].eq(bind_val))
+          else
+            scope
+          end
+        end
+        
       end
 
       module ThroughAssociation
@@ -326,18 +312,14 @@ if ActiveRecord::VERSION::STRING =~ /^4\.1/
 
             if options[:source_type]
               type = foreign_type
-
               # START PATCH
               # original: source_type = options[:source_type]
-
               source_type = if ActiveRecord::Base.store_base_sti_class
                 options[:source_type]
               else
                 ([options[:source_type].constantize] + options[:source_type].constantize.descendants).map(&:to_s)
               end
-
               # END PATCH
-
               through_scope_chain.first << lambda { |object|
                 where(type => source_type)
               }
