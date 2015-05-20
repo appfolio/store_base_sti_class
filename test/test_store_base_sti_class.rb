@@ -8,6 +8,8 @@ class TestStoreBaseStiClass < StoreBaseSTIClass::TestCase
 
     @thinking_post = SpecialPost.create(:title => 'Thinking', :body => "the body")
     @misc_tag      = Tag.create(:name => 'Misc')
+    # TO SHOW QUERIES FOR DEBUGGING:
+    # ActiveRecord::Base.logger = Logger.new(STDOUT) if defined?(ActiveRecord::Base)
   end
 
   def teardown
@@ -41,7 +43,7 @@ class TestStoreBaseStiClass < StoreBaseSTIClass::TestCase
   end
 
   def test_polymorphic_has_one_create_model_with_inheritance
-    post = SpecialPost.new(:title => 'Budget Forecasts Bigger 2011 Deficit', :body => "the body")
+    post = SpecialPost.new(:title => 'Budget Forecasts Bigger 2015 Deficit', :body => "the body")
 
     tagging = @misc_tag.create_tagging(:taggable => post)
     assert_equal "SpecialPost", tagging.taggable_type
