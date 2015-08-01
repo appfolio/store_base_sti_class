@@ -76,8 +76,8 @@ RAILS_VERSIONS = [
   "4.1.8",
   "4.1.9",
   "4.2.0",
-  "4.2.1"
-
+  "4.2.1",
+  "4.2.3"
 ]
 
 RAILS_VERSIONS.each do |version|
@@ -89,7 +89,7 @@ RAILS_VERSIONS.each do |version|
         '~> 4.0'
       when /^4.0/
         '~> 4.2'
-      when /^4.1/
+      when /^4.[12]/
         '~> 5.1'
       else
         raise 'no minitest version specified for that ActiveRecord version'
