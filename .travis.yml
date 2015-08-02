@@ -54,6 +54,7 @@ gemfile:
   - gemfiles/rails_3.2.19.gemfile
   - gemfiles/rails_3.2.20.gemfile
   - gemfiles/rails_3.2.21.gemfile
+  - gemfiles/rails_3.2.22.gemfile
   - gemfiles/rails_4.0.0.gemfile
   - gemfiles/rails_4.0.1.gemfile
   - gemfiles/rails_4.0.2.gemfile
@@ -80,8 +81,12 @@ gemfile:
   - gemfiles/rails_4.1.7.1.gemfile
   - gemfiles/rails_4.1.8.gemfile
   - gemfiles/rails_4.1.9.gemfile
+  - gemfiles/rails_4.1.10.gemfile
+  - gemfiles/rails_4.1.11.gemfile
+  - gemfiles/rails_4.1.12.gemfile
   - gemfiles/rails_4.2.0.gemfile
   - gemfiles/rails_4.2.1.gemfile
+  - gemfiles/rails_4.2.2.gemfile
   - gemfiles/rails_4.2.3.gemfile
 
 sudo: false
