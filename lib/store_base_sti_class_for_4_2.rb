@@ -52,21 +52,21 @@ if ActiveRecord::VERSION::STRING =~ /^4\.2/
             scope = klass.unscoped
 
             values         = reflection_scope.values
+            reflection_binds = reflection_scope.bind_values
             preload_values = preload_scope.values
+            preload_binds  = preload_scope.bind_values
 
             scope.where_values      = Array(values[:where])      + Array(preload_values[:where])
             scope.references_values = Array(values[:references]) + Array(preload_values[:references])
+            scope.bind_values       = (reflection_binds + preload_binds)
 
-            select_method = scope.respond_to?(:select!) ? :select! : :_select!
-            scope.send select_method, preload_values[:select] || values[:select] || table[Arel.star]
+            scope._select!   preload_values[:select] || values[:select] || table[Arel.star]
             scope.includes! preload_values[:includes] || values[:includes]
+            scope.joins! preload_values[:joins] || values[:joins]
+            scope.order! preload_values[:order] || values[:order]
 
-            if preload_values.key? :order
-              scope.order! preload_values[:order]
-            else
-              if values.key? :order
-                scope.order! values[:order]
-              end
+            if preload_values[:readonly] || values[:readonly]
+              scope.readonly!
             end
 
             if options[:as]
@@ -107,10 +107,11 @@ if ActiveRecord::VERSION::STRING =~ /^4\.2/
               unless reflection_scope.where_values.empty?
                 scope.includes_values = Array(reflection_scope.values[:includes] || options[:source])
                 scope.where_values    = reflection_scope.values[:where]
+                scope.bind_values     = reflection_scope.bind_values
               end
 
               scope.references! reflection_scope.values[:references]
-              scope.order! reflection_scope.values[:order] if scope.eager_loading?
+              scope = scope.order reflection_scope.values[:order] if scope.eager_loading?
             end
 
             scope
@@ -141,13 +142,7 @@ if ActiveRecord::VERSION::STRING =~ /^4\.2/
           end
           binds
         end
-        class BindSubstitution
-          def bind_value(scope, column, value, alias_tracker)
-            substitute = alias_tracker.connection.substitute_at(column)
-            scope.bind_values += [[column, @block.call(value)]]
-            substitute
-          end
-        end
+
         def next_chain_scope(scope, table, reflection, tracker, assoc_klass, foreign_table, next_reflection)
           join_keys = reflection.join_keys(assoc_klass)
           key = join_keys.key
@@ -176,6 +171,7 @@ if ActiveRecord::VERSION::STRING =~ /^4\.2/
 
           scope = scope.joins(join(foreign_table, constraint))
         end
+
         def last_chain_scope(scope, table, reflection, owner, tracker, assoc_klass)
           join_keys = reflection.join_keys(assoc_klass)
           key = join_keys.key
