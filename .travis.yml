@@ -89,5 +89,6 @@ gemfile:
   - gemfiles/rails_4.2.2.gemfile
   - gemfiles/rails_4.2.3.gemfile
   - gemfiles/rails_4.2.4.gemfile
+  - gemfiles/rails_4.2.5.1.gemfile
 
 sudo: false
