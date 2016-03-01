@@ -148,6 +148,18 @@ class TestStoreBaseStiClass < StoreBaseSTIClass::TestCase
     assert_equal post, tagging.taggable
   end
 
+  def test_sti_has_many_with_polymorphic_on_join_model
+    customer = Customer.create!(:name => 'Bob')
+    customer.comments.create!(:name => 'Comment1')
+
+    prospect = Prospect.create!(:name => 'Bob')
+    prospect.comments.create!(:name => 'Comment1')
+    prospect.comments.create!(:name => 'Comment2')
+
+    assert_equal 1, Customer.joins(:comments).count
+    assert_equal 2, Prospect.joins(:comments).count
+  end
+
   if Gem::Version.new(ActiveRecord::VERSION::STRING) < Gem::Version.new('4.1.0')
     def test_finder_sql_is_supported
       author      = Author.create!(:name => 'Bob')

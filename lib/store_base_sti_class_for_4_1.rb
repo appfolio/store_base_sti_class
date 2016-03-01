@@ -308,7 +308,6 @@ if ActiveRecord::VERSION::STRING =~ /^4\.1/
             join_attributes
           end
         end
-
       end
 
     end
@@ -348,7 +347,6 @@ if ActiveRecord::VERSION::STRING =~ /^4\.1/
           end
         end
       end
-
     end
   end
 
