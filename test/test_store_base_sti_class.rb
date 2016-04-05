@@ -148,6 +148,13 @@ class TestStoreBaseStiClass < StoreBaseSTIClass::TestCase
     assert_equal post, tagging.taggable
   end
 
+  def test_join_association
+    tag = SpecialTag.create!(:name => 'Special')
+    tag.polytaggings << Tagging.new
+
+    assert SpecialTag.joins(:polytaggings).where(id: tag.id).first
+  end
+
   if Gem::Version.new(ActiveRecord::VERSION::STRING) < Gem::Version.new('4.1.0')
     def test_finder_sql_is_supported
       author      = Author.create!(:name => 'Bob')
