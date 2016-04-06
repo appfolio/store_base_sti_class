@@ -65,7 +65,12 @@ if ActiveRecord::VERSION::STRING =~ /^4\.1/
               end
               scope_chain_index += 1
 
-              scope_chain_items.concat [klass.send(:build_default_scope, ActiveRecord::Relation.create(klass, table))].compact
+              default_scope = if klass.method(:build_default_scope).arity == 0
+                klass.send(:build_default_scope)
+              else
+                klass.send(:build_default_scope, ActiveRecord::Relation.create(klass, table))
+              end
+              scope_chain_items.concat [default_scope].compact
 
               rel = scope_chain_items.inject(scope_chain_items.shift) do |left, right|
                 left.merge right
