@@ -46,6 +46,7 @@ RAILS_VERSIONS = %w(
   4.2.7.1
   5.0.0
   5.0.0.1
+  5.0.1
 )
 
 RAILS_VERSIONS.each do |version|
