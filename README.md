@@ -65,7 +65,7 @@ When changing this behavior you will have write a migration to update all of you
 This gem incorporates work from:
 - https://github.com/codepodu/store_base_sti_class_for_4_0
 
-It currently works with ActiveRecord 4.0.x through 4.2.x.
+It currently works with ActiveRecord 4.0.x through 5.0.x.
 
 ## Copyright
 

@@ -59,7 +59,7 @@ class TestStoreBaseStiClass < StoreBaseSTIClass::TestCase
 
   def test_polymorphic_has_many_through_create_via_association
     tag  = SpecialTag.create!(:name => 'Special')
-    post = tag.polytagged_posts.create!(:title => 'To Be or Not To Be?', :body => "the body")
+    tag.polytagged_posts.create!(:title => 'To Be or Not To Be?', :body => "the body")
 
     assert_equal "SpecialTag", tag.polytaggings.first.polytag_type
   end
