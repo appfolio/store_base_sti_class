@@ -9,4 +9,4 @@ ActiveRecord::Base.configurations = {
   }
 }
 
-ActiveRecord::Base.establish_connection 'unittest'
+ActiveRecord::Base.establish_connection :unittest
