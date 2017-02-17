@@ -51,6 +51,19 @@ gemfile:
   - gemfiles/rails_4.2.5.1.gemfile
   - gemfiles/rails_4.2.5.2.gemfile
   - gemfiles/rails_4.2.6.gemfile
+  - gemfiles/rails_4.2.7.gemfile
+  - gemfiles/rails_4.2.7.1.gemfile
+
+matrix:
+  include:
+    - rvm: 2.2.6
+      gemfile: gemfiles/rails_5.0.0.gemfile
+      gemfile: gemfiles/rails_5.0.0.1.gemfile
+      gemfile: gemfiles/rails_5.0.1.gemfile
+    - rvm: 2.3.3
+      gemfile: gemfiles/rails_5.0.0.gemfile
+      gemfile: gemfiles/rails_5.0.0.1.gemfile
+      gemfile: gemfiles/rails_5.0.1.gemfile
 
 # This Rails versions are broken with the latest Ruby.
 # They are fixed in the next version :
