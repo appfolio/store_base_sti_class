@@ -63,12 +63,9 @@ When changing this behavior you will have write a migration to update all of you
 ## Notes
 
 This gem incorporates work from:
-- https://github.com/pkmiec/store_base_sti_class_for_3_0
-- https://github.com/appfolio/store_base_sti_class_for_3_1
-- https://github.com/Lovethis/store_base_sti_class_for_3_1
 - https://github.com/codepodu/store_base_sti_class_for_4_0
 
-It currently works with ActiveRecord 3.0.5 through 4.2.x.
+It currently works with ActiveRecord 4.0.x through 4.2.x.
 
 ## Copyright
 
