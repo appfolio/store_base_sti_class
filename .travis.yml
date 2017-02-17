@@ -1,4 +1,5 @@
 language: ruby
+sudo: false
 
 rvm:
   - 2.1.9
@@ -50,4 +51,41 @@ gemfile:
   - gemfiles/rails_4.2.5.2.gemfile
   - gemfiles/rails_4.2.6.gemfile
 
-sudo: false
+# This Rails versions are broken with the latest Ruby.
+# They are fixed in the next version :
+# https://github.com/rails/rails/blob/v4.0.6/activerecord/CHANGELOG.md
+# https://github.com/rails/rails/blob/v4.1.2/activerecord/CHANGELOG.md
+matrix:
+  allow_failures:
+    - rvm: 2.2.6
+      gemfile: gemfiles/rails_4.0.0.gemfile
+    - rvm: 2.2.6
+      gemfile: gemfiles/rails_4.0.1.gemfile
+    - rvm: 2.2.6
+      gemfile: gemfiles/rails_4.0.2.gemfile
+    - rvm: 2.2.6
+      gemfile: gemfiles/rails_4.0.3.gemfile
+    - rvm: 2.2.6
+      gemfile: gemfiles/rails_4.0.4.gemfile
+    - rvm: 2.2.6
+      gemfile: gemfiles/rails_4.0.5.gemfile
+    - rvm: 2.2.6
+      gemfile: gemfiles/rails_4.1.0.gemfile
+    - rvm: 2.2.6
+      gemfile: gemfiles/rails_4.1.1.gemfile
+    - rvm: 2.3.3
+      gemfile: gemfiles/rails_4.0.0.gemfile
+    - rvm: 2.3.3
+      gemfile: gemfiles/rails_4.0.1.gemfile
+    - rvm: 2.3.3
+      gemfile: gemfiles/rails_4.0.2.gemfile
+    - rvm: 2.3.3
+      gemfile: gemfiles/rails_4.0.3.gemfile
+    - rvm: 2.3.3
+      gemfile: gemfiles/rails_4.0.4.gemfile
+    - rvm: 2.3.3
+      gemfile: gemfiles/rails_4.0.5.gemfile
+    - rvm: 2.3.3
+      gemfile: gemfiles/rails_4.1.0.gemfile
+    - rvm: 2.3.3
+      gemfile: gemfiles/rails_4.1.1.gemfile
