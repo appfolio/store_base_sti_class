@@ -20,9 +20,9 @@ Gem::Specification.new do |s|
   s.homepage = 'http://github.com/appfolio/store_base_sti_class'
   s.licenses = ['MIT']
   s.rubygems_version = '2.2.2'
-  s.summary = 'Modifies ActiveRecord 3.0.5 - 4.2.x with the ability to store the actual class (instead of the base class) in polymorhic _type columns when using STI'
+  s.summary = 'Modifies ActiveRecord 4.0.x - 4.2.x with the ability to store the actual class (instead of the base class) in polymorhic _type columns when using STI'
 
-  s.add_runtime_dependency(%q<activerecord>, ['>= 3.0.5'])
+  s.add_runtime_dependency(%q<activerecord>, ['>= 4.0'])
   s.add_development_dependency(%q<minitest>, ['>= 4.0'])
   s.add_development_dependency(%q<sqlite3>, ['>= 0'])
   s.add_development_dependency(%q<appraisal>, ['>= 0'])
