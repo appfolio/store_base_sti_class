@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.require_paths = ['lib']
   s.authors = ['AppFolio']
-  s.description = "\n    ActiveRecord has always stored the base class in polymorphic _type columns when using STI. This can have non-trivial\n    performance implications in certain cases. This gem adds 'store_base_sti_class' configuration options which controls\n    whether ActiveRecord will store the base class or the actual class. Default to true for backwards compatibility.\n  "
+  s.description = "\n    ActiveRecord has always stored the base class in polymorphic _type columns when using STI. This can have non-trivial\n    performance implications in certain cases. This gem adds the 'store_base_sti_class' configuration option which controls\n    whether ActiveRecord will store the base class or the actual class. Defaults to true for backwards compatibility.\n  "
   s.email = 'engineering@appfolio.com'
   s.extra_rdoc_files = %w(
     LICENSE.txt
