@@ -53,6 +53,7 @@ gemfile:
   - gemfiles/rails_4.2.6.gemfile
   - gemfiles/rails_4.2.7.gemfile
   - gemfiles/rails_4.2.7.1.gemfile
+  - gemfiles/rails_4.2.8.gemfile
   - gemfiles/rails_5.0.0.gemfile
   - gemfiles/rails_5.0.0.1.gemfile
   - gemfiles/rails_5.0.1.gemfile
