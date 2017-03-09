@@ -58,6 +58,7 @@ gemfile:
   - gemfiles/rails_5.0.0.1.gemfile
   - gemfiles/rails_5.0.1.gemfile
   - gemfiles/rails_5.0.2.gemfile
+  - gemfiles/rails_5.1.0.beta1.gemfile
 
 matrix:
   include:
@@ -71,6 +72,8 @@ matrix:
       gemfile: gemfiles/rails_5.0.1.gemfile
     - rvm: 2.4.0
       gemfile: gemfiles/rails_5.0.2.gemfile
+    - rvm: 2.4.0
+      gemfile: gemfiles/rails_5.1.0.beta1.gemfile
   exclude:
     # Rails 5.0+ requires a minimum of Ruby 2.2.2.
     - rvm: 2.1.9
@@ -81,6 +84,8 @@ matrix:
       gemfile: gemfiles/rails_5.0.1.gemfile
     - rvm: 2.1.9
       gemfile: gemfiles/rails_5.0.2.gemfile
+    - rvm: 2.1.9
+      gemfile: gemfiles/rails_5.1.0.beta1.gemfile
     # These Rails versions are broken with the latest Ruby versions.
     # They are fixed in the next version:
     # https://github.com/rails/rails/blob/v4.0.6/activerecord/CHANGELOG.md
