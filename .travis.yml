@@ -3,8 +3,8 @@ sudo: false
 cache: bundler
 
 rvm:
-  - 2.2.6
-  - 2.3.3
+  - 2.2.7
+  - 2.3.4
 
 gemfile:
   - gemfiles/rails_4.0.0.gemfile
@@ -78,35 +78,35 @@ matrix:
     # They are fixed in the next version:
     # https://github.com/rails/rails/blob/v4.0.6/activerecord/CHANGELOG.md
     # https://github.com/rails/rails/blob/v4.1.2/activerecord/CHANGELOG.md
-    - rvm: 2.2.6
+    - rvm: 2.2.7
       gemfile: gemfiles/rails_4.0.0.gemfile
-    - rvm: 2.2.6
+    - rvm: 2.2.7
       gemfile: gemfiles/rails_4.0.1.gemfile
-    - rvm: 2.2.6
+    - rvm: 2.2.7
       gemfile: gemfiles/rails_4.0.2.gemfile
-    - rvm: 2.2.6
+    - rvm: 2.2.7
       gemfile: gemfiles/rails_4.0.3.gemfile
-    - rvm: 2.2.6
+    - rvm: 2.2.7
       gemfile: gemfiles/rails_4.0.4.gemfile
-    - rvm: 2.2.6
+    - rvm: 2.2.7
       gemfile: gemfiles/rails_4.0.5.gemfile
-    - rvm: 2.2.6
+    - rvm: 2.2.7
       gemfile: gemfiles/rails_4.1.0.gemfile
-    - rvm: 2.2.6
+    - rvm: 2.2.7
       gemfile: gemfiles/rails_4.1.1.gemfile
-    - rvm: 2.3.3
+    - rvm: 2.3.4
       gemfile: gemfiles/rails_4.0.0.gemfile
-    - rvm: 2.3.3
+    - rvm: 2.3.4
       gemfile: gemfiles/rails_4.0.1.gemfile
-    - rvm: 2.3.3
+    - rvm: 2.3.4
       gemfile: gemfiles/rails_4.0.2.gemfile
-    - rvm: 2.3.3
+    - rvm: 2.3.4
       gemfile: gemfiles/rails_4.0.3.gemfile
-    - rvm: 2.3.3
+    - rvm: 2.3.4
       gemfile: gemfiles/rails_4.0.4.gemfile
-    - rvm: 2.3.3
+    - rvm: 2.3.4
       gemfile: gemfiles/rails_4.0.5.gemfile
-    - rvm: 2.3.3
+    - rvm: 2.3.4
       gemfile: gemfiles/rails_4.1.0.gemfile
-    - rvm: 2.3.3
+    - rvm: 2.3.4
       gemfile: gemfiles/rails_4.1.1.gemfile
