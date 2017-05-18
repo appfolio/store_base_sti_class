@@ -345,38 +345,6 @@ if ActiveRecord::VERSION::STRING =~ /^5\.1/
           lambda { |object| where(type => adjusted_source_type) }
         end
       end
-
-      class ThroughReflection
-        def scope_chain
-          @scope_chain ||= begin
-            scope_chain = source_reflection.scope_chain.map(&:dup)
-
-            # Add to it the scope from this reflection (if any)
-            scope_chain.first << scope if scope
-
-            through_scope_chain = through_reflection.scope_chain.map(&:dup)
-
-            if options[:source_type]
-              type = foreign_type
-              # START PATCH
-              # original: source_type = options[:source_type]
-              source_type =
-                if ActiveRecord::Base.store_base_sti_class
-                  options[:source_type]
-                else
-                  ([options[:source_type].constantize] + options[:source_type].constantize.descendants).map(&:to_s)
-                end
-              # END PATCH
-              through_scope_chain.first << lambda { |object|
-                where(type => source_type)
-              }
-            end
-
-            # Recursively fill out the rest of the array from the through reflection
-            scope_chain + through_scope_chain
-          end
-        end
-      end
     end
   end
 
