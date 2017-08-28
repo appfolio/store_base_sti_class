@@ -155,13 +155,15 @@ class TestStoreBaseStiClass < StoreBaseSTIClass::TestCase
     assert SpecialTag.joins(:polytaggings).where(id: tag.id).first
   end
 
-  def test_where_query
-    tag = SpecialTag.create!(:name => 'Special')
-    post = @thinking_post
+  if Gem::Version.new(ActiveRecord::VERSION::STRING) >= Gem::Version.new('5')
+    def test_where_query
+      tag = SpecialTag.create!(:name => 'Special')
+      post = @thinking_post
 
-    tag.polytagged_posts << post
+      tag.polytagged_posts << post
 
-    assert_equal 1, Tagging.where(taggable: post).size
+      assert_equal 1, Tagging.where(taggable: post).size
+    end
   end
 
   if Gem::Version.new(ActiveRecord::VERSION::STRING) < Gem::Version.new('4.1.0')
