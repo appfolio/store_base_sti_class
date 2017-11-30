@@ -70,6 +70,62 @@ if ActiveRecord::VERSION::STRING =~ /^5\.2/
             scope
           end
         end
+
+        class ThroughAssociation < Association
+          private
+
+          def through_scope
+            scope = through_reflection.klass.unscoped
+            options = reflection.options
+
+            if options[:source_type]
+
+              # BEGIN PATCH
+              # original:
+              # scope.where! reflection.foreign_type => options[:source_type]
+
+              adjusted_foreign_type =
+                if ActiveRecord::Base.store_base_sti_class
+                  options[:source_type]
+                else
+                  ([options[:source_type].constantize] + options[:source_type].constantize.descendants).map(&:to_s)
+                end
+
+              scope.where! reflection.foreign_type => adjusted_foreign_type
+              # END PATCH
+
+            elsif !reflection_scope.where_clause.empty?
+              scope.where_clause = reflection_scope.where_clause
+              values = reflection_scope.values
+
+              if includes = values[:includes]
+                scope.includes!(source_reflection.name => includes)
+              else
+                scope.includes!(source_reflection.name)
+              end
+
+              if values[:references] && !values[:references].empty?
+                scope.references!(values[:references])
+              else
+                scope.references!(source_reflection.table_name)
+              end
+
+              if joins = values[:joins]
+                scope.joins!(source_reflection.name => joins)
+              end
+
+              if left_outer_joins = values[:left_outer_joins]
+                scope.left_outer_joins!(source_reflection.name => left_outer_joins)
+              end
+
+              if scope.eager_loading? && order_values = values[:order]
+                scope = scope.order(order_values)
+              end
+            end
+
+            scope unless scope.empty_scope?
+          end
+        end
       end
 
       class AssociationScope
