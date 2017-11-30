@@ -227,6 +227,7 @@ if ActiveRecord::VERSION::STRING =~ /^5\.2/
               else
                 foreign_klass.sti_name
               end
+            # END PATCH
 
             klass_scope.where!(type => adjusted_foreign_klass)
           end
