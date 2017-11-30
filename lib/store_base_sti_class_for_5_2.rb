@@ -110,48 +110,21 @@ if ActiveRecord::VERSION::STRING =~ /^5\.2/
           private
 
           def build_scope
-            scope = klass.unscoped
+            scope = klass.scope_for_association
 
-            values = reflection_scope.values
-            preload_values = preload_scope.values
-
-            scope.where_clause = reflection_scope.where_clause + preload_scope.where_clause
-            scope.references_values = Array(values[:references]) + Array(preload_values[:references])
-
-            if preload_values[:select] || values[:select]
-              scope._select!(preload_values[:select] || values[:select])
-            end
-            scope.includes! preload_values[:includes] || values[:includes]
-            if preload_scope.joins_values.any?
-              scope.joins!(preload_scope.joins_values)
-            else
-              scope.joins!(reflection_scope.joins_values)
-            end
-
-            if order_values = preload_values[:order] || values[:order]
-              scope.order!(order_values)
-            end
-
-            if preload_values[:reordering] || values[:reordering]
-              scope.reordering_value = true
-            end
-
-            if preload_values[:readonly] || values[:readonly]
-              scope.readonly!
-            end
-
-            if options[:as]
+            if reflection.type
               # START PATCH
               # original:
-              # scope.where!(klass.table_name => { reflection.type => model.base_class.sti_name })
+              # scope.where!(reflection.type => model.base_class.sti_name)
 
-              scope.where!(klass.table_name => { reflection.type => ActiveRecord::Base.store_base_sti_class ? model.base_class.sti_name : model.sti_name })
+              scope.where!(reflection.type => ActiveRecord::Base.store_base_sti_class ? model.base_class.sti_name : model.sti_name)
 
               # END PATCH
             end
 
-            scope.unscope_values = Array(values[:unscope]) + Array(preload_values[:unscope])
-            klass.default_scoped.merge(scope)
+            scope.merge!(reflection_scope) if reflection.scope
+            scope.merge!(preload_scope) if preload_scope
+            scope
           end
         end
       end
