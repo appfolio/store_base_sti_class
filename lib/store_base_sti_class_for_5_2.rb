@@ -154,42 +154,6 @@ if ActiveRecord::VERSION::STRING =~ /^5\.2/
             klass.default_scoped.merge(scope)
           end
         end
-
-        module ThroughAssociation
-          private
-
-          def through_scope
-            scope = through_reflection.klass.unscoped
-
-            if options[:source_type]
-              # BEGIN PATCH
-              # original: scope.where! reflection.foreign_type => options[:source_type]
-
-              adjusted_foreign_type =
-                if ActiveRecord::Base.store_base_sti_class
-                  options[:source_type]
-                else
-                  ([options[:source_type].constantize] + options[:source_type].constantize.descendants).map(&:to_s)
-                end
-
-              scope.where! reflection.foreign_type => adjusted_foreign_type
-
-              # END PATCH
-            else
-              unless reflection_scope.where_clause.empty?
-                scope.includes_values = Array(reflection_scope.values[:includes] || options[:source])
-                scope.where_clause = reflection_scope.where_clause
-              end
-
-              scope.references! reflection_scope.values[:references]
-              if scope.eager_loading? && order_values = reflection_scope.values[:order]
-                scope = scope.order(order_values)
-              end
-            end
-
-            scope
-          end
-        end
       end
 
       class AssociationScope
