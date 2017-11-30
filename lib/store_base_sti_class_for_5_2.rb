@@ -32,63 +32,6 @@ if ActiveRecord::VERSION::STRING =~ /^5\.2/
         end
       end
 
-      class JoinDependency # :nodoc:
-        class JoinAssociation < JoinPart # :nodoc:
-          def join_constraints(foreign_table, foreign_klass, join_type, tables, chain)
-            joins         = []
-            binds         = []
-            tables        = tables.reverse
-
-            # The chain starts with the target table, but we want to end with it here (makes
-            # more sense in this context), so we reverse
-            chain.reverse_each do |reflection|
-              table = tables.shift
-              klass = reflection.klass
-
-              join_keys   = reflection.join_keys
-              key         = join_keys.key
-              foreign_key = join_keys.foreign_key
-
-              constraint = build_constraint(klass, table, key, foreign_table, foreign_key)
-
-              predicate_builder = PredicateBuilder.new(TableMetadata.new(klass, table))
-              scope_chain_items = reflection.join_scopes(table, predicate_builder)
-              klass_scope       = reflection.klass_join_scope(table, predicate_builder)
-
-              scope_chain_items.concat [klass_scope].compact
-
-              rel = scope_chain_items.inject(scope_chain_items.shift) do |left, right|
-                left.merge right
-              end
-
-              if rel && !rel.arel.constraints.empty?
-                binds += rel.bound_attributes
-                constraint = constraint.and rel.arel.constraints
-              end
-
-              if reflection.type
-                # START PATCH
-                # original:
-                # value = foreign_klass.base_class.name
-                value = ActiveRecord::Base.store_base_sti_class ? foreign_klass.base_class.name : foreign_klass.name
-                # END PATCH
-                column = klass.columns_hash[reflection.type.to_s]
-
-                binds << Relation::QueryAttribute.new(column.name, value, klass.type_for_attribute(column.name))
-                constraint = constraint.and klass.arel_attribute(reflection.type, table).eq(Arel::Nodes::BindParam.new)
-              end
-
-              joins << table.create_join(table, table.create_on(constraint), join_type)
-
-              # The current table in this iteration becomes the foreign table in the next
-              foreign_table, foreign_klass = table, klass
-            end
-
-            JoinInformation.new joins, binds
-          end
-        end
-      end
-
       class BelongsToPolymorphicAssociation
         private
 
@@ -268,6 +211,30 @@ if ActiveRecord::VERSION::STRING =~ /^5\.2/
     end
 
     module Reflection
+      class AbstractReflection
+        def join_scope(table, foreign_klass)
+          predicate_builder = predicate_builder(table)
+          scope_chain_items = join_scopes(table, predicate_builder)
+          klass_scope       = klass_join_scope(table, predicate_builder)
+
+          if type
+            # START PATCH
+            # original:
+            # klass_scope.where!(type => foreign_klass.base_class.sti_name)
+            adjusted_foreign_klass =
+              if ActiveRecord::Base.store_base_sti_class
+                foreign_klass.base_class.sti_name
+              else
+                foreign_klass.sti_name
+              end
+
+            klass_scope.where!(type => adjusted_foreign_klass)
+          end
+
+          scope_chain_items.inject(klass_scope, &:merge!)
+        end
+      end
+
       class PolymorphicReflection
         def source_type_info
           type = @previous_reflection.foreign_type
