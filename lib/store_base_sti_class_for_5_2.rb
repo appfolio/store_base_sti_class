@@ -183,11 +183,13 @@ if ActiveRecord::VERSION::STRING =~ /^5\.2/
 
         private
 
-        def next_chain_scope(scope, table, reflection, foreign_table, next_reflection)
+        def next_chain_scope(scope, reflection, next_reflection)
           join_keys = reflection.join_keys
           key = join_keys.key
           foreign_key = join_keys.foreign_key
 
+          table = reflection.aliased_table
+          foreign_table = next_reflection.aliased_table
           constraint = table[key].eq(foreign_table[foreign_key])
 
           if reflection.type
@@ -201,27 +203,28 @@ if ActiveRecord::VERSION::STRING =~ /^5\.2/
               klass = next_reflection.klass
               value = ([klass] + klass.descendants).map(&:name)
             end
-            scope = scope.where(table.name => { reflection.type => value })
+            scope = apply_scope(scope, table, reflection.type, value)
             # END PATCH
           end
 
-          scope = scope.joins(join(foreign_table, constraint))
+          scope.joins!(join(foreign_table, constraint))
         end
 
-        def last_chain_scope(scope, table, reflection, owner)
+        def last_chain_scope(scope, reflection, owner)
           join_keys = reflection.join_keys
           key = join_keys.key
           foreign_key = join_keys.foreign_key
 
+          table = reflection.aliased_table
           value = transform_value(owner[foreign_key])
-          scope = scope.where(table.name => { key => value })
+          scope = apply_scope(scope, table, key, value)
 
           if reflection.type
             # BEGIN PATCH
             # polymorphic_type = transform_value(owner.class.base_class.name)
             polymorphic_type = transform_value(ActiveRecord::Base.store_base_sti_class ? owner.class.base_class.name : owner.class.name)
             # END PATCH
-            scope = scope.where(table.name => { reflection.type => polymorphic_type })
+            scope = apply_scope(scope, table, reflection.type, polymorphic_type)
           end
 
           scope
