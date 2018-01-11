@@ -21,7 +21,7 @@ ActiveRecord::Schema.define do
 
     t.integer :polytag_id
     t.string  :polytag_type
-    
+
     t.string  :taggable_type
     t.integer :taggable_id
   end
@@ -30,6 +30,17 @@ ActiveRecord::Schema.define do
     t.string  :type
     t.string  :name
     t.integer :taggings_count, :default => 0
+  end
+
+  create_table :addresses, :force => true do |t|
+    t.string  :city
+
+    t.integer :addressable_id
+    t.string  :addressable_type
+  end
+
+  create_table :people, :force => true do |t|
+    t.string  :type
   end
 
 end

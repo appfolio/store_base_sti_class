@@ -1,10 +1,10 @@
 require 'helper'
 
-class TestStoreBaseStiClass < StoreBaseSTIClass::TestCase
+class TestStoringStiClassForTagOnly < StoreBaseSTIClass::TestCase
 
   def setup
     @old_store_sti_classes               = ActiveRecord::Base.store_sti_classes
-    ActiveRecord::Base.store_sti_classes = :all
+    ActiveRecord::Base.store_sti_classes = ['Tag']
 
     @thinking_post = SpecialPost.create(:title => 'Thinking', :body => "the body")
     @misc_tag      = Tag.create(:name => 'Misc')
@@ -19,7 +19,7 @@ class TestStoreBaseStiClass < StoreBaseSTIClass::TestCase
     vendor = Vendor.create!
     address = vendor.addresses.create!(city: 'Springfield')
     assert_equal vendor.id, address.addressable_id
-    assert_equal "Vendor",  address.addressable_type
+    assert_equal "Person",  address.addressable_type
 
     person = Person.create!
     address = person.addresses.create!(city: 'Springfield')
@@ -30,7 +30,7 @@ class TestStoreBaseStiClass < StoreBaseSTIClass::TestCase
     vendor = Vendor.create!
     address = vendor.addresses.build(city: 'Springfield')
     assert_equal vendor.id, address.addressable_id
-    assert_equal "Vendor",  address.addressable_type
+    assert_equal "Person",  address.addressable_type
 
     person = Person.create!
     address = person.addresses.build(city: 'Springfield')
@@ -39,26 +39,26 @@ class TestStoreBaseStiClass < StoreBaseSTIClass::TestCase
   end
 
   def test_polymorphic_belongs_to_assignment_with_inheritance_Post
-    # should update when assigning a saved record
+    # should store correct taggable_type when assigning a saved record
     tagging          = Tagging.new
     post             = SpecialPost.create(:title => 'Budget Forecasts Bigger 2011 Deficit', :body => "the body")
     tagging.taggable = post
     assert_equal post.id, tagging.taggable_id
-    assert_equal "SpecialPost", tagging.taggable_type
+    assert_equal "Post", tagging.taggable_type
 
-    # should update when assigning a new record
+    # should store correct taggable_type when assigning a new record
     tagging          = Tagging.new
     post             = SpecialPost.new(:title => 'Budget Forecasts Bigger 2011 Deficit', :body => "the body")
     tagging.taggable = post
     assert_nil tagging.taggable_id
-    assert_equal "SpecialPost", tagging.taggable_type
+    assert_equal "Post", tagging.taggable_type
   end
 
   def test_polymorphic_has_many_create_model_with_inheritance
     post = SpecialPost.new(:title => 'Budget Forecasts Bigger 2011 Deficit', :body => "the body")
 
     tagging = @misc_tag.taggings.create(:taggable => post)
-    assert_equal "SpecialPost", tagging.taggable_type
+    assert_equal "Post", tagging.taggable_type
 
     post.reload
     assert_equal [tagging], post.taggings
@@ -68,7 +68,7 @@ class TestStoreBaseStiClass < StoreBaseSTIClass::TestCase
     post = SpecialPost.new(:title => 'Budget Forecasts Bigger 2011 Deficit', :body => "the body")
 
     tagging = @misc_tag.create_tagging(:taggable => post)
-    assert_equal "SpecialPost", tagging.taggable_type
+    assert_equal "Post", tagging.taggable_type
 
     post.reload
     assert_equal tagging, post.tagging
@@ -185,7 +185,7 @@ class TestStoreBaseStiClass < StoreBaseSTIClass::TestCase
     tagging = tag.polytaggings.first
 
     assert_equal 'SpecialTag', tagging.polytag_type
-    assert_equal 'SpecialPost', tagging.taggable_type
+    assert_equal 'Post', tagging.taggable_type
 
     assert_equal tag, tagging.polytag
     assert_equal post, tagging.taggable
