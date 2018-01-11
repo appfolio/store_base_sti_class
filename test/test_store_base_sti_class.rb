@@ -128,13 +128,31 @@ class TestStoreBaseStiClass < StoreBaseSTIClass::TestCase
     assert_equal 2, tag.polytagged_posts.size
   end
 
+  def test_polymorphic_has_many_through_with_double_sti_on_join_model__storing_base_class
+    ActiveRecord::Base.store_base_sti_class = true
+
+    tag  = SpecialTag.create!(:name => 'Special')
+    post = @thinking_post
+
+    tag.polytagged_posts << post
+    tag.reload
+
+    assert_equal 1, tag.polytaggings.size
+
+    tagging = tag.polytaggings.first
+
+    assert_equal 'Tag', tagging.polytag_type
+    assert_equal 'Post', tagging.taggable_type
+
+    assert_equal tag, tagging.polytag
+    assert_equal post, tagging.taggable
+  end
+
   def test_polymorphic_has_many_through_with_double_sti_on_join_model
     tag  = SpecialTag.create!(:name => 'Special')
     post = @thinking_post
 
     tag.polytagged_posts << post
-
-
     tag.reload
 
     assert_equal 1, tag.polytaggings.size

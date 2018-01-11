@@ -314,6 +314,10 @@ if ActiveRecord::VERSION::STRING =~ /^5\.1/
             through_record.send("#{source_reflection.name}=", record)
 
             # START PATCH
+            # original:
+            # if options[:source_type]
+            #   through_record.send("#{source_reflection.foreign_type}=", options[:source_type])
+            # end
             if ActiveRecord::Base.store_base_sti_class
               if options[:source_type]
                 through_record.send("#{source_reflection.foreign_type}=", options[:source_type])
