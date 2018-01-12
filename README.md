@@ -63,14 +63,14 @@ ActiveRecord::Base.store_base_sti_class = false
 When changing this behavior, you will have write a migration to update all of your existing `_type` columns accordingly. You may also need to change your application if it explicitly relies on the `_type` columns.
 
 If you only want to store the actual STI subclass type for certain classes and let all others use the
-default behavior of storing the STI base class, just set `store_sti_classes` to which classes should
+default behavior of storing the STI base class, just set `store_sti_classes_for` to which classes should
 have the actual STI class stored.
 
 So in the example above, if you *only* wanted it to store the STI type for Person and its subclasses
 (Vendor), you would set:
 
 ```ruby
-ActiveRecord::Base.store_sti_classes = ['Person']
+ActiveRecord::Base.store_sti_classes_for = ['Person']
 ```
 
 ## Notes

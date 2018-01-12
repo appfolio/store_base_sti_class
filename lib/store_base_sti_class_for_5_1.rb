@@ -4,34 +4,34 @@ if ActiveRecord::VERSION::STRING =~ /^5\.1/
   module ActiveRecord
 
     class Base
-      class_attribute :_store_sti_classes, instance_accessor: false
-      def self.store_sti_classes
-        _store_sti_classes
+      class_attribute :_store_sti_classes_for, instance_accessor: false
+      def self.store_sti_classes_for
+        _store_sti_classes_for
       end
       # Override the setter so we can validate the input
-      def self.store_sti_classes=(new)
-        raise ArgumentError, "store_sti_classes must be set to an array or :all but was #{new.inspect}" unless new == :all or new.is_a? Array
+      def self.store_sti_classes_for=(new)
+        raise ArgumentError, "store_sti_classes_for must be set to an array or :all but was #{new.inspect}" unless new == :all or new.is_a? Array
         new.map(&:constantize).each { |klass|
           if klass != klass.base_class
-            raise ArgumentError, " You tried to set store_sti_classes to #{klass}, but store_sti_classes should only be set to an array of *base* classes for which you want to store the STI class (itself or any of its STI subclasses) in any _type columns. Did you mean '#{klass.base_class}'?"
+            raise ArgumentError, " You tried to set store_sti_classes_for to #{klass}, but store_sti_classes_for should only be set to an array of *base* classes for which you want to store the STI class (itself or any of its STI subclasses) in any _type columns. Did you mean '#{klass.base_class}'?"
           end
         } if new.is_a? Array
-        self._store_sti_classes = new
+        self._store_sti_classes_for = new
       end
-      self.store_sti_classes = []
+      self.store_sti_classes_for = []
 
       def self.store_sti_class?(klass)
-        return true if store_sti_classes == :all
+        return true if store_sti_classes_for == :all
         klass = klass.is_a?(Class) ? klass : klass.constantize
-        store_sti_classes.include? klass.base_class.name
+        store_sti_classes_for.include? klass.base_class.name
       end
 
       # For backwards compatibility
       def self.store_base_sti_class=(new)
         if new == true
-          self.store_sti_classes = []
+          self.store_sti_classes_for = []
         elsif new == false
-          self.store_sti_classes = :all
+          self.store_sti_classes_for = :all
         else
           raise ArgumentError, "store_base_sti_class can only be set to true or false but tried setting to #{new}"
         end

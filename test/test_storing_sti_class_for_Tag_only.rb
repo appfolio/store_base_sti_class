@@ -3,15 +3,15 @@ require 'helper'
 class TestStoringStiClassForTagOnly < StoreBaseSTIClass::TestCase
 
   def setup
-    @old_store_sti_classes               = ActiveRecord::Base.store_sti_classes
-    ActiveRecord::Base.store_sti_classes = ['Tag']
+    @old_store_sti_classes_for               = ActiveRecord::Base.store_sti_classes_for
+    ActiveRecord::Base.store_sti_classes_for = ['Tag']
 
     @thinking_post = SpecialPost.create(:title => 'Thinking', :body => "the body")
     @misc_tag      = Tag.create(:name => 'Misc')
   end
 
   def teardown
-    ActiveRecord::Base.store_sti_classes = @old_store_sti_classes
+    ActiveRecord::Base.store_sti_classes_for = @old_store_sti_classes_for
   end
 
   def test_polymorphic_belongs_to_assignment_with_inheritance_Person
