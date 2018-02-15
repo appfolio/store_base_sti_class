@@ -3,8 +3,8 @@ sudo: false
 cache: bundler
 
 rvm:
-  - 2.2.8
-  - 2.3.5
+  - 2.2.9
+  - 2.3.6
 
 gemfile:
   - gemfiles/rails_4.0.0.gemfile
@@ -72,74 +72,74 @@ gemfile:
 
 matrix:
   include:
-    - rvm: 2.4.2
+    - rvm: 2.4.3
       gemfile: gemfiles/rails_4.2.8.gemfile
-    - rvm: 2.4.2
+    - rvm: 2.4.3
       gemfile: gemfiles/rails_4.2.9.gemfile
-    - rvm: 2.4.2
+    - rvm: 2.4.3
       gemfile: gemfiles/rails_4.2.10.gemfile
-    - rvm: 2.4.2
+    - rvm: 2.4.3
       gemfile: gemfiles/rails_5.0.0.gemfile
-    - rvm: 2.4.2
+    - rvm: 2.4.3
       gemfile: gemfiles/rails_5.0.0.1.gemfile
-    - rvm: 2.4.2
+    - rvm: 2.4.3
       gemfile: gemfiles/rails_5.0.1.gemfile
-    - rvm: 2.4.2
+    - rvm: 2.4.3
       gemfile: gemfiles/rails_5.0.2.gemfile
-    - rvm: 2.4.2
+    - rvm: 2.4.3
       gemfile: gemfiles/rails_5.0.3.gemfile
-    - rvm: 2.4.2
+    - rvm: 2.4.3
       gemfile: gemfiles/rails_5.0.4.gemfile
-    - rvm: 2.4.2
+    - rvm: 2.4.3
       gemfile: gemfiles/rails_5.0.5.gemfile
-    - rvm: 2.4.2
+    - rvm: 2.4.3
       gemfile: gemfiles/rails_5.0.6.gemfile
-    - rvm: 2.4.2
+    - rvm: 2.4.3
       gemfile: gemfiles/rails_5.1.0.gemfile
-    - rvm: 2.4.2
+    - rvm: 2.4.3
       gemfile: gemfiles/rails_5.1.1.gemfile
-    - rvm: 2.4.2
+    - rvm: 2.4.3
       gemfile: gemfiles/rails_5.1.2.gemfile
-    - rvm: 2.4.2
+    - rvm: 2.4.3
       gemfile: gemfiles/rails_5.1.3.gemfile
-    - rvm: 2.4.2
+    - rvm: 2.4.3
       gemfile: gemfiles/rails_5.1.4.gemfile
-    - rvm: 2.4.2
+    - rvm: 2.4.3
       gemfile: gemfiles/rails_5.2.0.beta2.gemfile
   exclude:
     # These Rails versions are broken with the latest Ruby versions.
     # They are fixed in the next version:
     # https://github.com/rails/rails/blob/v4.0.6/activerecord/CHANGELOG.md
     # https://github.com/rails/rails/blob/v4.1.2/activerecord/CHANGELOG.md
-    - rvm: 2.2.8
+    - rvm: 2.2.9
       gemfile: gemfiles/rails_4.0.0.gemfile
-    - rvm: 2.2.8
+    - rvm: 2.2.9
       gemfile: gemfiles/rails_4.0.1.gemfile
-    - rvm: 2.2.8
+    - rvm: 2.2.9
       gemfile: gemfiles/rails_4.0.2.gemfile
-    - rvm: 2.2.8
+    - rvm: 2.2.9
       gemfile: gemfiles/rails_4.0.3.gemfile
-    - rvm: 2.2.8
+    - rvm: 2.2.9
       gemfile: gemfiles/rails_4.0.4.gemfile
-    - rvm: 2.2.8
+    - rvm: 2.2.9
       gemfile: gemfiles/rails_4.0.5.gemfile
-    - rvm: 2.2.8
+    - rvm: 2.2.9
       gemfile: gemfiles/rails_4.1.0.gemfile
-    - rvm: 2.2.8
+    - rvm: 2.2.9
       gemfile: gemfiles/rails_4.1.1.gemfile
-    - rvm: 2.3.5
+    - rvm: 2.3.6
       gemfile: gemfiles/rails_4.0.0.gemfile
-    - rvm: 2.3.5
+    - rvm: 2.3.6
       gemfile: gemfiles/rails_4.0.1.gemfile
-    - rvm: 2.3.5
+    - rvm: 2.3.6
       gemfile: gemfiles/rails_4.0.2.gemfile
-    - rvm: 2.3.5
+    - rvm: 2.3.6
       gemfile: gemfiles/rails_4.0.3.gemfile
-    - rvm: 2.3.5
+    - rvm: 2.3.6
       gemfile: gemfiles/rails_4.0.4.gemfile
-    - rvm: 2.3.5
+    - rvm: 2.3.6
       gemfile: gemfiles/rails_4.0.5.gemfile
-    - rvm: 2.3.5
+    - rvm: 2.3.6
       gemfile: gemfiles/rails_4.1.0.gemfile
-    - rvm: 2.3.5
+    - rvm: 2.3.6
       gemfile: gemfiles/rails_4.1.1.gemfile
