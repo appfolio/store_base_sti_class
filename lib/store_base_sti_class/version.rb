@@ -1,3 +1,3 @@
 module StoreBaseSTIClass
-  VERSION = '1.0.0'.freeze
+  VERSION = '1.2.0'.freeze
 end
