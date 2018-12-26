@@ -4,8 +4,38 @@ if ActiveRecord::VERSION::STRING =~ /^5\.1/
   module ActiveRecord
 
     class Base
-      class_attribute :store_base_sti_class
-      self.store_base_sti_class = true
+      class_attribute :_store_sti_classes_for, instance_accessor: false
+      def self.store_sti_classes_for
+        _store_sti_classes_for
+      end
+      # Override the setter so we can validate the input
+      def self.store_sti_classes_for=(new)
+        raise ArgumentError, "store_sti_classes_for must be set to an array or :all but was #{new.inspect}" unless new == :all or new.is_a? Array
+        new.map(&:constantize).each { |klass|
+          if klass != klass.base_class
+            raise ArgumentError, " You tried to set store_sti_classes_for to #{klass}, but store_sti_classes_for should only be set to an array of *base* classes for which you want to store the STI class (itself or any of its STI subclasses) in any _type columns. Did you mean '#{klass.base_class}'?"
+          end
+        } if new.is_a? Array
+        self._store_sti_classes_for = new
+      end
+      self.store_sti_classes_for = []
+
+      def self.store_sti_class?(klass)
+        return true if store_sti_classes_for == :all
+        klass = klass.is_a?(Class) ? klass : klass.constantize
+        store_sti_classes_for.include? klass.base_class.name
+      end
+
+      # For backwards compatibility
+      def self.store_base_sti_class=(new)
+        if new == true
+          self.store_sti_classes_for = []
+        elsif new == false
+          self.store_sti_classes_for = :all
+        else
+          raise ArgumentError, "store_base_sti_class can only be set to true or false but tried setting to #{new}"
+        end
+      end
     end
 
     class PredicateBuilder
@@ -39,7 +69,7 @@ if ActiveRecord::VERSION::STRING =~ /^5\.1/
               # original:
               # attributes[reflection.type] = owner.class.base_class.name
 
-              attributes[reflection.type] = ActiveRecord::Base.store_base_sti_class ? owner.class.base_class.name : owner.class.name
+              attributes[reflection.type] = ActiveRecord::Base.store_sti_class?(owner.class) ? owner.class.name : owner.class.base_class.name
               # END PATCH
             end
           end
@@ -86,7 +116,7 @@ if ActiveRecord::VERSION::STRING =~ /^5\.1/
                 # START PATCH
                 # original:
                 # value = foreign_klass.base_class.name
-                value = ActiveRecord::Base.store_base_sti_class ? foreign_klass.base_class.name : foreign_klass.name
+                value = ActiveRecord::Base.store_sti_class?(foreign_klass) ? foreign_klass.name : foreign_klass.base_class.name
                 # END PATCH
                 column = klass.columns_hash[reflection.type.to_s]
 
@@ -115,7 +145,7 @@ if ActiveRecord::VERSION::STRING =~ /^5\.1/
           # original:
           # owner[reflection.foreign_type] = record.class.base_class.name
 
-          owner[reflection.foreign_type] = ActiveRecord::Base.store_base_sti_class ? record.class.base_class.name : record.class.name
+          owner[reflection.foreign_type] = ActiveRecord::Base.store_sti_class?(record.class) ? record.class.name : record.class.base_class.name
 
           # END PATCH
         end
@@ -161,7 +191,7 @@ if ActiveRecord::VERSION::STRING =~ /^5\.1/
               # original:
               # scope.where!(klass.table_name => { reflection.type => model.base_class.sti_name })
 
-              scope.where!(klass.table_name => { reflection.type => ActiveRecord::Base.store_base_sti_class ? model.base_class.sti_name : model.sti_name })
+              scope.where!(klass.table_name => { reflection.type => ActiveRecord::Base.store_sti_class?(model) ? model.sti_name : model.base_class.sti_name })
 
               # END PATCH
             end
@@ -182,10 +212,10 @@ if ActiveRecord::VERSION::STRING =~ /^5\.1/
               # original: scope.where! reflection.foreign_type => options[:source_type]
 
               adjusted_foreign_type =
-                if ActiveRecord::Base.store_base_sti_class
-                  options[:source_type]
-                else
+                if ActiveRecord::Base.store_sti_class?(options[:source_type])
                   ([options[:source_type].constantize] + options[:source_type].constantize.descendants).map(&:to_s)
+                else
+                  options[:source_type]
                 end
 
               scope.where! reflection.foreign_type => adjusted_foreign_type
@@ -218,7 +248,7 @@ if ActiveRecord::VERSION::STRING =~ /^5\.1/
           if last_reflection.type
             # START PATCH
             # original: binds << owner.class.base_class.name
-            binds << (ActiveRecord::Base.store_base_sti_class ? owner.class.base_class.name : owner.class.name)
+            binds << (ActiveRecord::Base.store_sti_class?(owner.class) ? owner.class.name : owner.class.base_class.name)
             # END PATCH
           end
 
@@ -226,7 +256,7 @@ if ActiveRecord::VERSION::STRING =~ /^5\.1/
             if reflection.type
               # START PATCH
               # original: binds << next_reflection.klass.base_class.name
-              binds << (ActiveRecord::Base.store_base_sti_class ? next_reflection.klass.base_class.name : next_reflection.klass.name)
+              binds << (ActiveRecord::Base.store_sti_class?(next_reflection.klass) ? next_reflection.klass.name : next_reflection.klass.base_class.name)
               # END PATCH
             end
           end
@@ -247,11 +277,11 @@ if ActiveRecord::VERSION::STRING =~ /^5\.1/
             # original:
             # value = transform_value(next_reflection.klass.base_class.name)
             # scope = scope.where(table.name => { reflection.type => value })
-            if ActiveRecord::Base.store_base_sti_class
-              value = transform_value(next_reflection.klass.base_class.name)
-            else
-              klass = next_reflection.klass
+            klass = next_reflection.klass
+            if ActiveRecord::Base.store_sti_class?(klass)
               value = ([klass] + klass.descendants).map(&:name)
+            else
+              value = transform_value(klass.base_class.name)
             end
             scope = scope.where(table.name => { reflection.type => value })
             # END PATCH
@@ -271,7 +301,7 @@ if ActiveRecord::VERSION::STRING =~ /^5\.1/
           if reflection.type
             # BEGIN PATCH
             # polymorphic_type = transform_value(owner.class.base_class.name)
-            polymorphic_type = transform_value(ActiveRecord::Base.store_base_sti_class ? owner.class.base_class.name : owner.class.name)
+            polymorphic_type = transform_value(ActiveRecord::Base.store_sti_class?(owner.class) ? owner.class.name : owner.class.base_class.name)
             # END PATCH
             scope = scope.where(table.name => { reflection.type => polymorphic_type })
           end
@@ -306,7 +336,7 @@ if ActiveRecord::VERSION::STRING =~ /^5\.1/
             #  records.map { |record| record.class.base_class.name }
 
             join_attributes[source_reflection.foreign_type] =
-              records.map { |record| ActiveRecord::Base.store_base_sti_class ? record.class.base_class.name : record.class.name }
+              records.map { |record| ActiveRecord::Base.store_sti_class?(record.class) ? record.class.name : record.class.base_class.name }
 
             # END PATCH
           end
@@ -330,10 +360,12 @@ if ActiveRecord::VERSION::STRING =~ /^5\.1/
             through_record.send("#{source_reflection.name}=", record)
 
             # START PATCH
-            if ActiveRecord::Base.store_base_sti_class
-              if options[:source_type]
-                through_record.send("#{source_reflection.foreign_type}=", options[:source_type])
-              end
+            # original:
+            # if options[:source_type]
+            #   through_record.send("#{source_reflection.foreign_type}=", options[:source_type])
+            # end
+            if options[:source_type] && !ActiveRecord::Base.store_sti_class?(options[:source_type])
+              through_record.send("#{source_reflection.foreign_type}=", options[:source_type])
             end
             # END PATCH
 
@@ -351,10 +383,10 @@ if ActiveRecord::VERSION::STRING =~ /^5\.1/
 
           # START PATCH
           adjusted_source_type =
-            if ActiveRecord::Base.store_base_sti_class
-              source_type
-            else
+            if ActiveRecord::Base.store_sti_class?(source_type)
               ([source_type.constantize] + source_type.constantize.descendants).map(&:to_s)
+            else
+              source_type
             end
           # END PATCH
 
