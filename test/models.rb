@@ -32,18 +32,6 @@ class Tag < ActiveRecord::Base
 
   has_many :polytaggings, :as => :polytag, :class_name => 'Tagging'
   has_many :polytagged_posts, :through => :polytaggings, :source => :taggable, :source_type => 'Post'
-
-  if Gem::Version.new(ActiveRecord::VERSION::STRING) < Gem::Version.new('4.1.0')
-    has_many :authors, :class_name => "Author", :finder_sql => proc {
-      <<-SQL
-        SELECT authors.* FROM authors
-          INNER JOIN posts p ON authors.id = p.author_id
-          INNER JOIN taggings tgs ON tgs.taggable_id = p.id AND tgs.taggable_type = "Post"
-          WHERE tgs.tag_id = #{self.id}
-      SQL
-    }
-  end
-
 end
 
 class SpecialTag < Tag

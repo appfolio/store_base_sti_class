@@ -24,7 +24,6 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency(%q<activerecord>, ['>= 4.0'])
   s.add_development_dependency(%q<minitest>, ['>= 4.0'])
-  s.add_development_dependency(%q<sqlite3>, ['>= 0'])
   s.add_development_dependency(%q<appraisal>, ['>= 0'])
   s.add_development_dependency(%q<bundler>, ['>= 0'])
 end
