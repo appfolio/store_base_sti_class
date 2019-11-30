@@ -110,22 +110,43 @@ if ActiveRecord::VERSION::STRING =~ /^5\.2/
       class HasManyThroughAssociation
         private
 
-        def build_through_record(record)
-          @through_records[record.object_id] ||= begin
-            ensure_mutable
+        if ActiveRecord::VERSION::STRING =~ /^5\.2\.4/
+          def build_through_record(record)
+            @through_records[record.object_id] ||= begin
+              ensure_mutable
 
-            through_record = through_association.build(*options_for_through_record)
-            through_record.send("#{source_reflection.name}=", record)
+              attributes = through_scope_attributes
+              attributes[source_reflection.name] = record
 
-            # START PATCH
-            if ActiveRecord::Base.store_base_sti_class
-              if options[:source_type]
-                through_record.send("#{source_reflection.foreign_type}=", options[:source_type])
+              # START PATCH
+              if ActiveRecord::Base.store_base_sti_class
+                if options[:source_type]
+                  attributes[source_reflection.foreign_type] = options[:source_type]
+                end
               end
-            end
-            # END PATCH
+              # END PATCH
 
-            through_record
+              through_association.build(attributes)
+            end
+          end
+        else
+          def build_through_record(record)
+            @through_records[record.object_id] ||= begin
+              ensure_mutable
+
+              through_record = through_association.build(*options_for_through_record)
+              through_record.send("#{source_reflection.name}=", record)
+
+              # START PATCH
+              if ActiveRecord::Base.store_base_sti_class
+                if options[:source_type]
+                  through_record.send("#{source_reflection.foreign_type}=", options[:source_type])
+                end
+              end
+              # END PATCH
+
+              through_record
+            end
           end
         end
       end
