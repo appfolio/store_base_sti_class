@@ -79,6 +79,14 @@ It currently works with ActiveRecord 4.2.x through 6.0.x. If you need support
 for ActiveRecord 3.x, use a pre-1.0 version of the gem, or ActiveRecord < 4.2
 use a pre-2.0 version of the gem.
 
+## Conflicts
+
+This gem produces known conflicts with these other gems:
+
+### friendly_id
+
+When using [friendly_id](https://github.com/norman/friendly_id) >= 5.2.5 with the [History module](https://norman.github.io/friendly_id/FriendlyId/History.html) enabled, duplicate slugs will be generated for STI subclasses with the same sluggable identifier (ex: name). This will either cause saves to fail if you have the proper indexes in place, or will cause slug lookups to be non-deterministic, either of which is undesirable.
+
 ## Copyright
 
 Copyright (c) 2011-2019 AppFolio, inc. See LICENSE.txt for
