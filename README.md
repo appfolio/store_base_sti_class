@@ -87,6 +87,13 @@ This gem produces known conflicts with these other gems:
 
 When using [friendly_id](https://github.com/norman/friendly_id) >= 5.2.5 with the [History module](https://norman.github.io/friendly_id/FriendlyId/History.html) enabled, duplicate slugs will be generated for STI subclasses with the same sluggable identifier (ex: name). This will either cause saves to fail if you have the proper indexes in place, or will cause slug lookups to be non-deterministic, either of which is undesirable.
 
+## History
+
+* https://github.com/rails/rails/issues/724
+* https://github.com/rails/rails/issues/5441#issuecomment-4563865
+* https://github.com/rails/rails/issues/4729#issuecomment-5729297
+* https://github.com/rails/rails/issues/5441#issuecomment-264871920
+
 ## Copyright
 
 Copyright (c) 2011-2019 AppFolio, inc. See LICENSE.txt for
