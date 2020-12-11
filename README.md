@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/appfolio/store_base_sti_class.svg?branch=master)](https://travis-ci.org/appfolio/store_base_sti_class)
+[![CI](https://github.com/appfolio/store_base_sti_class/workflows/CI/badge.svg)](https://github.com/appfolio/store_base_sti_class/actions)
+
 ## Description
 
 Given the following class definitions:
