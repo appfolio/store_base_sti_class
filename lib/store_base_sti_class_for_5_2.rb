@@ -110,7 +110,7 @@ if ActiveRecord::VERSION::STRING =~ /^5\.2/
       class HasManyThroughAssociation
         private
 
-        if ActiveRecord::VERSION::STRING =~ /^5\.2\.4/
+        if Gem::Version.new(ActiveRecord::VERSION::STRING) >= Gem::Version.new('5.2.4')
           def build_through_record(record)
             @through_records[record.object_id] ||= begin
               ensure_mutable
