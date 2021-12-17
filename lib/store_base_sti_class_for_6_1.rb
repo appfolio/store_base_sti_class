@@ -107,7 +107,6 @@ if ActiveRecord::VERSION::STRING =~ /^6\.1/
 
           scope.joins!(join(foreign_table, constraint))
         end
-
       end
 
       class HasManyThroughAssociation
@@ -152,5 +151,4 @@ if ActiveRecord::VERSION::STRING =~ /^6\.1/
       end
     end
   end
-
 end
