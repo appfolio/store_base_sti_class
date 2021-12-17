@@ -21,8 +21,9 @@ jobs:
           - rails_5.2.3
           - rails_5.2.4
           - rails_5.2.5
-          - rails_6.0.3
-          - rails_6.1.0
+          - rails_5.2.6
+          - rails_6.0.4
+          - rails_6.1.4
     steps:
       - name: Checkout
         uses: actions/checkout@v2
