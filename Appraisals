@@ -7,11 +7,12 @@ RAILS_VERSIONS = %w[
   5.2.6
   6.0.4
   6.1.4
+  7.0.0
 ].freeze
 
 RAILS_VERSIONS.each do |version|
   appraise "rails_#{version}" do
     gem 'activerecord', version
-    gem 'sqlite3', ['6.0.4', '6.1.4'].include?(version) ? '~> 1.4.0' : '~> 1.3.0'
+    gem 'sqlite3', ['6.0.4', '6.1.4', '7.0.0'].include?(version) ? '~> 1.4.0' : '~> 1.3.0'
   end
 end
