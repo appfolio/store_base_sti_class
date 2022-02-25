@@ -1,31 +1,30 @@
-require 'rubygems'
+# frozen_string_literal: true
+
 require 'bundler'
+
 begin
   Bundler.setup(:default, :development)
 rescue Bundler::BundlerError => e
-  $stderr.puts e.message
-  $stderr.puts "Run `bundle install` to install missing gems"
+  warn e.message
+  warn 'Run `bundle install` to install missing gems'
   exit e.status_code
 end
 
-require 'minitest/autorun'
-
-$LOAD_PATH.unshift(File.dirname(__FILE__))
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
-require 'store_base_sti_class'
-
-require 'connection'
-
-# silence verbose schema loading
-original_stdout = $stdout
-$stdout = StringIO.new
-begin
-  require "schema"
-ensure
-  $stdout = original_stdout
+if ENV['WITH_COVERAGE'] == 'true'
+  require 'simplecov'
+  SimpleCov.start do
+    enable_coverage :branch
+    add_filter %r{\A/test}
+  end
 end
 
+require 'store_base_sti_class'
+require 'minitest/autorun'
+require 'minitest/reporters'
+require 'setup_database'
 require 'models'
+
+MiniTest::Reporters.use! unless ENV['RM_INFO']
 
 # the following is needed because ActiveRecord::TestCase uses ActiveRecord::SQLCounter, which is
 # not bundled as part of the gem
@@ -78,30 +77,26 @@ end
 
 require 'active_support/test_case'
 
-module StoreBaseSTIClass
-  class TestCase < (Gem::Version.new(ActiveRecord::VERSION::STRING) < Gem::Version.new('4.1.0') ? ActiveRecord::TestCase : ActiveSupport::TestCase)
+module ActiveSupport
+  class TestCase
     private
 
-    if Gem::Version.new(ActiveRecord::VERSION::STRING) >= Gem::Version.new('3.2.0')
-
-      def assert_queries(num = 1, options = {})
-        ignore_none = options.fetch(:ignore_none) { num == :any }
-        ActiveRecord::SQLCounter.clear_log
-        yield
-      ensure
-        the_log = ignore_none ? ActiveRecord::SQLCounter.log_all : ActiveRecord::SQLCounter.log
-        if num == :any
-          assert_operator the_log.size, :>=, 1, "1 or more queries expected, but none were executed."
-        else
-          mesg = "#{the_log.size} instead of #{num} queries were executed.#{the_log.size == 0 ? '' : "\nQueries:\n#{the_log.join("\n")}"}"
-          assert_equal num, the_log.size, mesg
-        end
+    def assert_queries(num = 1, options = {})
+      ignore_none = options.fetch(:ignore_none) { num == :any }
+      ActiveRecord::SQLCounter.clear_log
+      yield
+    ensure
+      the_log = ignore_none ? ActiveRecord::SQLCounter.log_all : ActiveRecord::SQLCounter.log
+      if num == :any
+        assert_operator the_log.size, :>=, 1, "1 or more queries expected, but none were executed."
+      else
+        mesg = "#{the_log.size} instead of #{num} queries were executed.#{the_log.size == 0 ? '' : "\nQueries:\n#{the_log.join("\n")}"}"
+        assert_equal num, the_log.size, mesg
       end
+    end
 
-      def assert_no_queries(&block)
-        assert_queries(0, :ignore_none => true, &block)
-      end
-
+    def assert_no_queries(&block)
+      assert_queries(0, ignore_none: true, &block)
     end
   end
 end

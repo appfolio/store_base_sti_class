@@ -1,15 +1,36 @@
-RAILS_VERSIONS = %w[
-  5.0.7
-  5.1.7
-  5.2.3
-  5.2.4
-  6.0.3
-  6.1.0
-].freeze
+# frozen_string_literal: true
 
-RAILS_VERSIONS.each do |version|
-  appraise "rails_#{version}" do
-    gem 'activerecord', version
-    gem 'sqlite3', ['6.0.3', '6.1.0'].include?(version) ? '~> 1.4.0' : '~> 1.3.0'
+case RUBY_VERSION
+when '2.6.9'
+  appraise "ruby-#{RUBY_VERSION}_activerecord60" do
+    source 'https://rubygems.org' do
+      gem 'activerecord', '~> 6.0.0'
+    end
   end
+
+  appraise "ruby-#{RUBY_VERSION}_activerecord61" do
+    source 'https://rubygems.org' do
+      gem 'activerecord', '~> 6.1.0'
+    end
+  end
+when '2.7.5', '3.1.0'
+  appraise "ruby-#{RUBY_VERSION}_activerecord60" do
+    source 'https://rubygems.org' do
+      gem 'activerecord', '~> 6.0.0'
+    end
+  end
+
+  appraise "ruby-#{RUBY_VERSION}_activerecord61" do
+    source 'https://rubygems.org' do
+      gem 'activerecord', '~> 6.1.0'
+    end
+  end
+
+  appraise "ruby-#{RUBY_VERSION}_activerecord70" do
+    source 'https://rubygems.org' do
+      gem 'activerecord', '~> 7.0.0'
+    end
+  end
+else
+  raise "Unsupported Ruby version #{RUBY_VERSION}"
 end

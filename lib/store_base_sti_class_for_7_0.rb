@@ -1,6 +1,6 @@
 require 'active_record/associations/join_dependency/join_part'
 
-if ActiveRecord::VERSION::STRING =~ /^5\.2/
+if ActiveRecord::VERSION::STRING =~ /\A7\.0/
   module ActiveRecord
 
     class Base
@@ -25,8 +25,12 @@ if ActiveRecord::VERSION::STRING =~ /^5\.2/
             scope = through_reflection.klass.unscoped
             options = reflection.options
 
-            if options[:source_type]
+            values = reflection_scope.values
+            if annotations = values[:annotate]
+              scope.annotate!(*annotations)
+            end
 
+            if options[:source_type]
               # BEGIN PATCH
               # original:
               # scope.where! reflection.foreign_type => options[:source_type]
@@ -43,7 +47,6 @@ if ActiveRecord::VERSION::STRING =~ /^5\.2/
 
             elsif !reflection_scope.where_clause.empty?
               scope.where_clause = reflection_scope.where_clause
-              values = reflection_scope.values
 
               if includes = values[:includes]
                 scope.includes!(source_reflection.name => includes)
@@ -52,7 +55,7 @@ if ActiveRecord::VERSION::STRING =~ /^5\.2/
               end
 
               if values[:references] && !values[:references].empty?
-                scope.references!(values[:references])
+                scope.references_values |= values[:references]
               else
                 scope.references!(source_reflection.table_name)
               end
@@ -70,7 +73,7 @@ if ActiveRecord::VERSION::STRING =~ /^5\.2/
               end
             end
 
-            scope unless scope.empty_scope?
+            scope
           end
         end
       end
@@ -79,19 +82,19 @@ if ActiveRecord::VERSION::STRING =~ /^5\.2/
         private
 
         def next_chain_scope(scope, reflection, next_reflection)
-          join_keys = reflection.join_keys
-          key = join_keys.key
-          foreign_key = join_keys.foreign_key
+          primary_key = reflection.join_primary_key
+          foreign_key = reflection.join_foreign_key
 
           table = reflection.aliased_table
           foreign_table = next_reflection.aliased_table
-          constraint = table[key].eq(foreign_table[foreign_key])
+          constraint = table[primary_key].eq(foreign_table[foreign_key])
 
           if reflection.type
             # BEGIN PATCH
             # original:
             # value = transform_value(next_reflection.klass.polymorphic_name)
             # scope = apply_scope(scope, table, reflection.type, value)
+
             if ActiveRecord::Base.store_base_sti_class
               value = transform_value(next_reflection.klass.polymorphic_name)
             else
@@ -110,43 +113,20 @@ if ActiveRecord::VERSION::STRING =~ /^5\.2/
       class HasManyThroughAssociation
         private
 
-        if Gem::Version.new(ActiveRecord::VERSION::STRING) >= Gem::Version.new('5.2.4')
-          def build_through_record(record)
-            @through_records[record.object_id] ||= begin
-              ensure_mutable
+        def build_through_record(record)
+          @through_records[record.object_id] ||= begin
+            ensure_mutable
 
-              attributes = through_scope_attributes
-              attributes[source_reflection.name] = record
+            attributes = through_scope_attributes
+            attributes[source_reflection.name] = record
 
-              # START PATCH
-              if ActiveRecord::Base.store_base_sti_class
-                if options[:source_type]
-                  attributes[source_reflection.foreign_type] = options[:source_type]
-                end
-              end
-              # END PATCH
-
-              through_association.build(attributes)
+            # START PATCH
+            if ActiveRecord::Base.store_base_sti_class
+              attributes[source_reflection.foreign_type] = options[:source_type] if options[:source_type]
             end
-          end
-        else
-          def build_through_record(record)
-            @through_records[record.object_id] ||= begin
-              ensure_mutable
+            # END PATCH
 
-              through_record = through_association.build(*options_for_through_record)
-              through_record.send("#{source_reflection.name}=", record)
-
-              # START PATCH
-              if ActiveRecord::Base.store_base_sti_class
-                if options[:source_type]
-                  through_record.send("#{source_reflection.foreign_type}=", options[:source_type])
-                end
-              end
-              # END PATCH
-
-              through_record
-            end
+            through_association.build(attributes)
           end
         end
       end
