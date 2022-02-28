@@ -23,3 +23,5 @@ tmp
 .yardoc
 _yardoc
 doc/
+
+test/test.log

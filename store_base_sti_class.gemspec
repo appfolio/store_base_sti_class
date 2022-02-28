@@ -1,29 +1,30 @@
-# -*- encoding: utf-8 -*-
-lib = File.expand_path('../lib', __FILE__)
-$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'store_base_sti_class/version'
+# frozen_string_literal: true
 
-Gem::Specification.new do |s|
-  s.name = 'store_base_sti_class'
-  s.version = StoreBaseSTIClass::VERSION
+require_relative 'lib/store_base_sti_class/version'
 
-  s.require_paths = ['lib']
-  s.authors = ['AppFolio']
-  s.description = "\n    ActiveRecord has always stored the base class in polymorphic _type columns when using STI. This can have non-trivial\n    performance implications in certain cases. This gem adds the 'store_base_sti_class' configuration option which controls\n    whether ActiveRecord will store the base class or the actual class. Defaults to true for backwards compatibility.\n  "
-  s.email = 'engineering@appfolio.com'
-  s.extra_rdoc_files = %w(
-    LICENSE.txt
-    README.md
-  )
-  s.files = Dir['**/*'].reject{ |f| f[%r{^pkg/}] || f[%r{^test/}] }
+Gem::Specification.new do |spec|
+  spec.name                  = 'store_base_sti_class'
+  spec.version               = StoreBaseSTIClass::VERSION
+  spec.platform              = Gem::Platform::RUBY
+  spec.author                = 'AppFolio'
+  spec.email                 = 'opensource@appfolio.com'
+  spec.description           = <<~MSG
+    ActiveRecord has always stored the base class in polymorphic _type columns when using STI. This can have non-trivial
+    performance implications in certain cases. This gem adds the 'store_base_sti_class' configuration option which
+    controls whether ActiveRecord will store the base class or the actual class. Defaults to true for backwards
+    compatibility.'
+  MSG
+  spec.summary               = <<~MSG
+    Modifies ActiveRecord 5.0.x - 7.0.x with the ability to store the actual class (instead of the base class) in
+    polymorhic _type columns when using STI.
+  MSG
+  spec.homepage              = 'https://github.com/appfolio/store_base_sti_class'
+  spec.license               = 'MIT'
+  spec.files                 = Dir['**/*'].select { |f| f[%r{^(lib/|LICENSE.txt|.*gemspec)}] }
+  spec.require_paths         = ['lib']
+  spec.required_ruby_version = Gem::Requirement.new('>= 2.6.3')
 
-  s.homepage = 'http://github.com/appfolio/store_base_sti_class'
-  s.licenses = ['MIT']
-  s.rubygems_version = '2.2.2'
-  s.summary = 'Modifies ActiveRecord 4.2.x - 6.0.x with the ability to store the actual class (instead of the base class) in polymorhic _type columns when using STI'
+  spec.metadata['allowed_push_host'] = 'https://rubygems.org'
 
-  s.add_runtime_dependency(%q<activerecord>, ['>= 4.0'])
-  s.add_development_dependency(%q<minitest>, ['>= 4.0'])
-  s.add_development_dependency(%q<appraisal>, ['>= 0'])
-  s.add_development_dependency(%q<bundler>, ['>= 0'])
+  spec.add_dependency('activerecord', ['>= 6', '< 7.1'])
 end

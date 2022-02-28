@@ -1,0 +1,19 @@
+version: 2.1
+
+orbs:
+  gem-tool: appfolio/gem-tool@volatile
+
+workflows:
+  rc:
+    jobs:
+      - gem-tool/rake_test:
+          name: test_ruby-<< matrix.ruby_version >>
+          executor_tag: ruby_mysql
+          matrix:
+            parameters:
+              ruby_version:
+                - '3.1.0'
+                - '2.7.5'
+                - '2.6.9'
+          after-appraisal-install-steps:
+            - gem-tool/wait_mysql
