@@ -24,7 +24,8 @@ require 'minitest/reporters'
 require 'setup_database'
 require 'models'
 
-MiniTest::Reporters.use! unless ENV['RM_INFO']
+Minitest::Test.make_my_diffs_pretty!
+Minitest::Reporters.use! unless ENV['RM_INFO']
 
 # the following is needed because ActiveRecord::TestCase uses ActiveRecord::SQLCounter, which is
 # not bundled as part of the gem
