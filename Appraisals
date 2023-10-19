@@ -19,6 +19,12 @@ when '2.7.7', '3.1.3', '3.2.1'
       gem 'activerecord', '~> 7.0.0'
     end
   end
+
+  appraise "ruby-#{RUBY_VERSION}_activerecord71" do
+    source 'https://rubygems.org' do
+      gem 'activerecord', '~> 7.1.0'
+    end
+  end
 else
   raise "Unsupported Ruby version #{RUBY_VERSION}"
 end
