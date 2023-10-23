@@ -15,7 +15,7 @@ Gem::Specification.new do |spec|
     compatibility.'
   MSG
   spec.summary               = <<~MSG
-    Modifies ActiveRecord 5.0.x - 7.0.x with the ability to store the actual class (instead of the base class) in
+    Modifies ActiveRecord 6.1.x - 7.1.x with the ability to store the actual class (instead of the base class) in
     polymorhic _type columns when using STI.
   MSG
   spec.homepage              = 'https://github.com/appfolio/store_base_sti_class'
@@ -26,5 +26,5 @@ Gem::Specification.new do |spec|
 
   spec.metadata['allowed_push_host'] = 'https://rubygems.org'
 
-  spec.add_dependency('activerecord', ['>= 6', '< 7.1'])
+  spec.add_dependency('activerecord', ['>= 6.1', '< 7.2'])
 end
