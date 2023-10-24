@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Schema < ActiveRecord::Migration[5.0]
+class Schema < ActiveRecord::Migration["#{ActiveRecord::VERSION::MAJOR}.#{ActiveRecord::VERSION::MINOR}"]
   def self.up
     suppress_messages do
       create_table :authors, force: true do |t|
