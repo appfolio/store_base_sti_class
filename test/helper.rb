@@ -19,6 +19,7 @@ if ENV['WITH_COVERAGE'] == 'true'
 end
 
 require 'store_base_sti_class'
+require 'debug'
 require 'minitest/autorun'
 require 'minitest/reporters'
 require 'setup_database'
