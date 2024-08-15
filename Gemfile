@@ -3,7 +3,7 @@
 source 'https://rubygems.org' # global source
 
 source 'https://rubygems.org' do
-  gem 'activesupport', '>= 6.1', '< 7.2'
+  gem 'activesupport', '>= 6.1', '< 7.3'
   gem 'appraisal', '>= 2.5', '< 3'
   gem 'bundler', '>= 2.2', '< 3'
   gem 'debug', '>= 1.9', '< 2'
