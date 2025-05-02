@@ -2,11 +2,16 @@
 
 ## [Unreleased](https://github.com/appfolio/store_base_sti_class/tree/HEAD)
 
-[Full Changelog](https://github.com/appfolio/store_base_sti_class/compare/v3.2.0...HEAD)
+[Full Changelog](https://github.com/appfolio/store_base_sti_class/compare/v3.4.0...HEAD)
 
 **Merged pull requests:**
 
+- \[BANK-1370\] Appraise ruby 3.4 and rails 8 [\#65](https://github.com/appfolio/store_base_sti_class/pull/65) ([Maimer](https://github.com/Maimer))
 - Appraise Rails 7.2 [\#60](https://github.com/appfolio/store_base_sti_class/pull/60) ([Maimer](https://github.com/Maimer))
+
+## [v3.4.0](https://github.com/appfolio/store_base_sti_class/tree/v3.4.0) (2025-05-02)
+
+[Full Changelog](https://github.com/appfolio/store_base_sti_class/compare/v3.2.0...v3.4.0)
 
 ## [v3.2.0](https://github.com/appfolio/store_base_sti_class/tree/v3.2.0) (2024-02-29)
 
@@ -166,10 +171,6 @@
 **Closed issues:**
 
 - ActiveRecord::NestedAttributes issue Rails 3 [\#2](https://github.com/appfolio/store_base_sti_class/issues/2)
-
-**Merged pull requests:**
-
-- Rails 4 support [\#4](https://github.com/appfolio/store_base_sti_class/pull/4) ([ghost](https://github.com/ghost))
 
 ## [v0.0.2](https://github.com/appfolio/store_base_sti_class/tree/v0.0.2) (2012-05-11)
 
