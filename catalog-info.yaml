@@ -1,0 +1,15 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  title: store_base_sti_class
+  description: Modifies ActiveRecord 4+ with the ability to store the actual class (instead of the base class) in polymorphic _type columns when using STI.
+  tags: []
+  annotations:
+    appfolio.com/package-location: https://rubygems.org/gems/store_base_sti_class
+    appfolio.com/package-type: gem
+    circleci.com/project-slug: github/appfolio/store_base_sti_class
+  name: store-base-sti-class
+spec:
+  type: library
+  lifecycle: maintenance
+  owner: engineering
