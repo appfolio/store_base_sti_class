@@ -2,16 +2,31 @@
 
 ## [Unreleased](https://github.com/appfolio/store_base_sti_class/tree/HEAD)
 
-[Full Changelog](https://github.com/appfolio/store_base_sti_class/compare/v3.4.0...HEAD)
+[Full Changelog](https://github.com/appfolio/store_base_sti_class/compare/v3.5.0...HEAD)
+
+**Merged pull requests:**
+
+- \[BANK-1584\] Appraise `rails` 8.1 [\#69](https://github.com/appfolio/store_base_sti_class/pull/69) ([Maimer](https://github.com/Maimer))
+- Configure NPM and Yarn to use custom NPM package repository [\#67](https://github.com/appfolio/store_base_sti_class/pull/67) ([appfolio-sourcegraph-batch-changes[bot]](https://github.com/apps/appfolio-sourcegraph-batch-changes))
+- \[KNOW-154\]: Use CODEOWNERS to determine Developer Portal catalog ownership [\#66](https://github.com/appfolio/store_base_sti_class/pull/66) ([modethirteen](https://github.com/modethirteen))
+
+## [v3.5.0](https://github.com/appfolio/store_base_sti_class/tree/v3.5.0) (2025-11-14)
+
+[Full Changelog](https://github.com/appfolio/store_base_sti_class/compare/v3.4.0...v3.5.0)
+
+**Closed issues:**
+
+- Ruby 3.4 [\#62](https://github.com/appfolio/store_base_sti_class/issues/62)
+- Rails 8 [\#61](https://github.com/appfolio/store_base_sti_class/issues/61)
+
+## [v3.4.0](https://github.com/appfolio/store_base_sti_class/tree/v3.4.0) (2025-05-02)
+
+[Full Changelog](https://github.com/appfolio/store_base_sti_class/compare/v3.2.0...v3.4.0)
 
 **Merged pull requests:**
 
 - \[BANK-1370\] Appraise ruby 3.4 and rails 8 [\#65](https://github.com/appfolio/store_base_sti_class/pull/65) ([Maimer](https://github.com/Maimer))
 - Appraise Rails 7.2 [\#60](https://github.com/appfolio/store_base_sti_class/pull/60) ([Maimer](https://github.com/Maimer))
-
-## [v3.4.0](https://github.com/appfolio/store_base_sti_class/tree/v3.4.0) (2025-05-02)
-
-[Full Changelog](https://github.com/appfolio/store_base_sti_class/compare/v3.2.0...v3.4.0)
 
 ## [v3.2.0](https://github.com/appfolio/store_base_sti_class/tree/v3.2.0) (2024-02-29)
 
@@ -37,7 +52,7 @@
 **Merged pull requests:**
 
 - Bump to version 2.0.3 [\#50](https://github.com/appfolio/store_base_sti_class/pull/50) ([bboe](https://github.com/bboe))
-- Add support for rails 5.2.5 [\#49](https://github.com/appfolio/store_base_sti_class/pull/49) ([Sam-Killgallon](https://github.com/Sam-Killgallon))
+- Add support for rails 5.2.5 [\#49](https://github.com/appfolio/store_base_sti_class/pull/49) ([sam-kayg](https://github.com/sam-kayg))
 
 ## [v2.0.2](https://github.com/appfolio/store_base_sti_class/tree/v2.0.2) (2020-12-11)
 
