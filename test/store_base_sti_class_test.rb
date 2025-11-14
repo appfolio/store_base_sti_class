@@ -1,7 +1,7 @@
 require 'helper'
 
 class StoreBaseStiClassTest < ActiveSupport::TestCase
-  def setup
+  setup do
     @old_store_base_sti_class = ActiveRecord::Base.store_base_sti_class
     ActiveRecord::Base.store_base_sti_class = false
 
