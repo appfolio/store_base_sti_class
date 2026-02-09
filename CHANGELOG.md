@@ -2,13 +2,19 @@
 
 ## [Unreleased](https://github.com/appfolio/store_base_sti_class/tree/HEAD)
 
-[Full Changelog](https://github.com/appfolio/store_base_sti_class/compare/v3.5.0...HEAD)
+[Full Changelog](https://github.com/appfolio/store_base_sti_class/compare/v3.6.0...HEAD)
 
 **Merged pull requests:**
 
-- \[BANK-1584\] Appraise `rails` 8.1 [\#69](https://github.com/appfolio/store_base_sti_class/pull/69) ([Maimer](https://github.com/Maimer))
-- Configure NPM and Yarn to use custom NPM package repository [\#67](https://github.com/appfolio/store_base_sti_class/pull/67) ([appfolio-sourcegraph-batch-changes[bot]](https://github.com/apps/appfolio-sourcegraph-batch-changes))
-- \[KNOW-154\]: Use CODEOWNERS to determine Developer Portal catalog ownership [\#66](https://github.com/appfolio/store_base_sti_class/pull/66) ([modethirteen](https://github.com/modethirteen))
+- \[BANK-1738\] Update supported Ruby versions to 3.3.10, 3.4.8, 4.0.1 [\#71](https://github.com/appfolio/store_base_sti_class/pull/71) ([Maimer](https://github.com/Maimer))
+
+## [v3.6.0](https://github.com/appfolio/store_base_sti_class/tree/v3.6.0) (2026-02-09)
+
+[Full Changelog](https://github.com/appfolio/store_base_sti_class/compare/v3.5.0...v3.6.0)
+
+**Closed issues:**
+
+- Rails 8.1 [\#68](https://github.com/appfolio/store_base_sti_class/issues/68)
 
 ## [v3.5.0](https://github.com/appfolio/store_base_sti_class/tree/v3.5.0) (2025-11-14)
 
@@ -18,6 +24,12 @@
 
 - Ruby 3.4 [\#62](https://github.com/appfolio/store_base_sti_class/issues/62)
 - Rails 8 [\#61](https://github.com/appfolio/store_base_sti_class/issues/61)
+
+**Merged pull requests:**
+
+- \[BANK-1584\] Appraise `rails` 8.1 [\#69](https://github.com/appfolio/store_base_sti_class/pull/69) ([Maimer](https://github.com/Maimer))
+- Configure NPM and Yarn to use custom NPM package repository [\#67](https://github.com/appfolio/store_base_sti_class/pull/67) ([appfolio-sourcegraph-batch-changes[bot]](https://github.com/apps/appfolio-sourcegraph-batch-changes))
+- \[KNOW-154\]: Use CODEOWNERS to determine Developer Portal catalog ownership [\#66](https://github.com/appfolio/store_base_sti_class/pull/66) ([modethirteen](https://github.com/modethirteen))
 
 ## [v3.4.0](https://github.com/appfolio/store_base_sti_class/tree/v3.4.0) (2025-05-02)
 
