@@ -23,7 +23,7 @@ Gem::Specification.new do |spec|
   spec.files         = Dir['**/*'].select { |f| f[%r{^(lib/|LICENSE.txt|.*gemspec)}] }
   spec.require_paths = ['lib']
 
-  spec.required_ruby_version = Gem::Requirement.new('< 3.5')
+  spec.required_ruby_version = Gem::Requirement.new('< 4.1')
   spec.metadata['allowed_push_host'] = 'https://rubygems.org'
 
   spec.add_dependency('activerecord', ['>= 7.2', '< 8.2'])
