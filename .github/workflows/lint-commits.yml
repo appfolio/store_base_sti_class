@@ -1,0 +1,8 @@
+name: Lint Commit Messages
+
+on:
+  pull_request:
+
+jobs:
+  lint-commits:
+    uses: appfolio/rubygems-releaser/.github/workflows/lint-commits.yml@v1

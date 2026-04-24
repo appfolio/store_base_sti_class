@@ -1,0 +1,13 @@
+name: Publish Gem
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  publish:
+    uses: appfolio/rubygems-releaser/.github/workflows/publish.yml@v1
