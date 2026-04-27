@@ -10,6 +10,8 @@ rescue Bundler::BundlerError => e
   exit e.status_code
 end
 
+require 'bundler/gem_tasks'
+
 require 'rake/testtask'
 
 Rake::TestTask.new(:test) do |t|
