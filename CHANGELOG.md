@@ -1,5 +1,18 @@
 # Changelog
 
+## [3.6.1](https://github.com/appfolio/store_base_sti_class/compare/v3.6.0...v3.6.1) (2026-04-27)
+
+
+### Documentation
+
+* update changelog ([15c9df0](https://github.com/appfolio/store_base_sti_class/commit/15c9df0b36659dbdc117207e36bc7eb6b62b6002))
+
+
+### Continuous Integration
+
+* add Release Please and gem-releaser workflows for automated releases ([4057a84](https://github.com/appfolio/store_base_sti_class/commit/4057a842c33043ecd28e7daa76c07bbd04a126bc))
+* add Release Please and gem-releaser workflows for automated releases ([89527e9](https://github.com/appfolio/store_base_sti_class/commit/89527e9f922e0211da6b697b78a857569c1e3214))
+
 ## [Unreleased](https://github.com/appfolio/store_base_sti_class/tree/HEAD)
 
 [Full Changelog](https://github.com/appfolio/store_base_sti_class/compare/v3.6.0...HEAD)
