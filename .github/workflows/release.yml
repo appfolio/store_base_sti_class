@@ -5,9 +5,14 @@ on:
     branches:
       - main
       - master
+    paths:
+      - 'lib/**'
+      - 'store_base_sti_class.gemspec'
+      - 'LICENSE.txt'
 
 permissions:
   contents: write
+  id-token: write
   pull-requests: write
 
 jobs:
