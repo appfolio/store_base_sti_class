@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   gem-tool: appfolio/gem-tool@volatile
+  public-packages: https://raw.githubusercontent.com/appfolio/public-packages/v1/orbs/public-packages.yml
 
 workflows:
   rc:
@@ -15,5 +16,7 @@ workflows:
                 - '4.0.1'
                 - '3.4.8'
                 - '3.3.10'
+          after-checkout-steps:
+            - public-packages/setup
           after-appraisal-install-steps:
             - gem-tool/wait_mysql

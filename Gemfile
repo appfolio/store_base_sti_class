@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-source 'https://rubygems.org' # global source
+source 'https://appfolio.jfrog.io/artifactory/api/gems/appfolio-store_base_sti_class-gem/'
 
-source 'https://rubygems.org' do
+source 'https://appfolio.jfrog.io/artifactory/api/gems/appfolio-store_base_sti_class-gem/' do
   gem 'activesupport', '>= 7.2', '< 8.2'
   gem 'appraisal', '>= 2.5', '< 3'
   gem 'bundler', '>= 2.6', '< 5'
