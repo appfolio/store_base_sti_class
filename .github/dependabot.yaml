@@ -5,6 +5,11 @@ registries:
     type: rubygems-server
     url: https://rubygems.pkg.github.com/appfolio
     token: "${{secrets.READ_ONLY_PACKAGES_CCIMU}}"
+  public-rubygems-packages:
+    type: rubygems-server
+    url: https://appfolio.jfrog.io/artifactory/api/gems/appfolio-store_base_sti_class-gem/
+    jfrog-oidc-provider-name: appfolio-github-oidc
+    audience: jfrog-appfolio
 updates:
 - package-ecosystem: bundler
   directory: "/"
