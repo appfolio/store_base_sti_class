@@ -1,5 +1,34 @@
 # Changelog
 
+## [3.6.1](https://github.com/appfolio/store_base_sti_class/compare/v3.6.0...v3.6.1) (2026-07-20)
+
+
+### Documentation
+
+* update changelog ([15c9df0](https://github.com/appfolio/store_base_sti_class/commit/15c9df0b36659dbdc117207e36bc7eb6b62b6002))
+
+
+### Miscellaneous Chores
+
+* migrate catalog-info.yaml metadata into gemspec for gemspec catalog ingestor ([225d0df](https://github.com/appfolio/store_base_sti_class/commit/225d0dfbc2b2442cbf3dbd3ac099511a11a16cba))
+* migrate npm registry from CodeArtifact to JFrog ([cb074ea](https://github.com/appfolio/store_base_sti_class/commit/cb074ea5edd87da2140d3ecfbcf24b56eb8c040f))
+* migrate npm registry from CodeArtifact to JFrog ([0ba8243](https://github.com/appfolio/store_base_sti_class/commit/0ba8243ab5262b535c16bbd50eaa4f0c4f2bf0b2))
+* standardize CI and test configuration ([9998d3c](https://github.com/appfolio/store_base_sti_class/commit/9998d3c8dc3c8416339e6d6e36555095ff48e8af))
+
+
+### Build System
+
+* migrate gem source from RubyGems to JFrog ([b8972db](https://github.com/appfolio/store_base_sti_class/commit/b8972dbdc3902b3a1e3bee089b3426b24304d4a7))
+
+
+### Continuous Integration
+
+* add id-token permission for OIDC trusted publishing ([2a8d706](https://github.com/appfolio/store_base_sti_class/commit/2a8d706bb83851289d32c5da936bfa9d842a1e6a))
+* add id-token permission for OIDC trusted publishing ([5935379](https://github.com/appfolio/store_base_sti_class/commit/593537978ab4797ecba314b9e591cc63e4ab0620))
+* add Release Please and gem-releaser workflows for automated releases ([4057a84](https://github.com/appfolio/store_base_sti_class/commit/4057a842c33043ecd28e7daa76c07bbd04a126bc))
+* add Release Please and gem-releaser workflows for automated releases ([89527e9](https://github.com/appfolio/store_base_sti_class/commit/89527e9f922e0211da6b697b78a857569c1e3214))
+* scope release-please to gem-shipped files ([dc8cfdb](https://github.com/appfolio/store_base_sti_class/commit/dc8cfdb5f851046e2ebdc4c7cc09aca5c59ffca6))
+
 ## [Unreleased](https://github.com/appfolio/store_base_sti_class/tree/HEAD)
 
 [Full Changelog](https://github.com/appfolio/store_base_sti_class/compare/v3.6.0...HEAD)
