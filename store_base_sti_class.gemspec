@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.summary       = 'Stores the actual class instead of the base class in polymorphic type columns for ActiveRecord STI.'
   spec.homepage      = 'https://github.com/appfolio/store_base_sti_class'
   spec.license       = 'MIT'
-  spec.files         = Dir['**/*'].select { |f| f[%r{^(lib/|LICENSE.txt|.*gemspec)}] }
+  spec.files         = Dir['**/*'].select { |f| f[%r{^(lib/|LICENSE.txt|store_base_sti_class\.*gemspec)}] }
   spec.require_paths = ['lib']
 
   spec.required_ruby_version = Gem::Requirement.new('< 4.1')
