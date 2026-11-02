@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  gem-tool: appfolio/gem-tool@volatile
+  gem-tool: https://raw.githubusercontent.com/appfolio/gem_tool/v2/orb.yml
   public-packages: https://raw.githubusercontent.com/appfolio/public-packages/v1/orbs/public-packages.yml
 
 workflows:
